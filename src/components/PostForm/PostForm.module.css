@@ -1,0 +1,41 @@
+.form {
+    display: grid;
+    background-color: var(--primary-color);
+    grid-template-rows: 1fr min-content;
+    position: fixed;
+    bottom: 3.2rem;
+    left: 50%;
+    max-inline-size: 64rem;
+    inline-size: 100%;
+    transform: translateX(-50%);
+    overflow: hidden;
+    border-radius: 8px;
+    padding-block: 0.8rem;
+    padding-inline: 1.2rem;
+}
+
+.label {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.8rem;
+    color: var(--background-color);
+}
+
+.input {
+    resize: none;
+}
+
+.input::placeholder {
+    color: var(--background-color);
+    opacity: 0.8;
+    font: inherit;
+}
+
+.submit {
+    grid-row: 2;
+    display: inline-block;
+    background-color: var(--accent-color);
+    block-size: 3.6rem;
+    inline-size: 3.6rem;
+    justify-self: end;
+}
