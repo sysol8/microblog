@@ -1,69 +1,52 @@
-# React + TypeScript + Vite
+# Microblog
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Microblog** - Простой микроблог на базе React и FastAPI, демонстрирующий сквозной цикл разработки от клиентской части до серверного API и валидации данных.
 
-Currently, two official plugins are available:
+## Основные возможности
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Лента постов с бесконечной прокруткой;
+- Мультиавторство: каждый пост связан с профилем автора;
+- Роутинг через React Router: переход между страцами с лентой постов, постами и профилем пользователя;
+- Кастомизация профиля: пользователь может менять свой никнейм и загружать аватар;
+- Подсчёт лайков: на странице профиля показывается общее количество лайков всех постов автора, а также список избранных записей;
+- Формы и валидация: демонстрируется работа с формами добавления и редактирования постов;
+- Авторизация и учёт прав: регистрация, логин, хранение токена, защита приватных маршрутов;
+- Взаимодействие с API: клиентская часть отправляет запросы к FastAPI-серверу, где все входящие данные проверяются Pydantic-моделями;
 
-## Expanding the ESLint configuration
+## Технологический стек
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Клиент: React с TypeScript, React Router, кастомные хуки, CSS Modules.
+- Сервер: FastAPI на Python, Pydantic для валидации, асинхронная запись в базу данных.
+- Хранение данных: реляционная база (PostgreSQL/MySQL) для долговечного хранения постов и пользователей; Redis в качестве быстрого кэша.
+- Сборка и конфигурация: Vite, ESLint, Prettier.
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Архитектура
+- Корневой компонент App и маршруты в main.tsx.
+- Layout-компонент с шапкой, боковой панелью и футером.
+- Папки pages для экранов (FeedPage, PostPage, ProfilePage).
+- Папка components для переиспользуемых UI-блоков (PostCard, Avatar, Button).
+- Папка hooks для кастомных хуков (useAuth, useInfiniteScroll, useApi).
+- Папка api с обёрткой HTTP-клиента и наборами функций для работы с эндпоинтами (/posts, /users).
+- Серверная часть: модуль posts с маршрутизатором APIRouter, Pydantic-схемами PostCreate/PostRead, CRUD-функциями, BackgroundTasks для асинхронного обновления кэша.
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## Установка и запуск
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Склонировать репозиторий. 
+- В каталоге server установить зависимости и поднять виртуальное окружение, выполнить миграции базы. 
+- Запустить FastAPI-сервер, убедиться, что он доступен на http://localhost:8000; 
+- В каталоге client установить npm-пакеты и запустить npm run dev для старта Vite-сервера. 
+- Открыть в браузере http://localhost:3000. 
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Что можно добавить
+- Реализовать систему комментариев и тредов под каждым постом.
+- Добавить подписки на авторов и ленту «только от подписок».
+- Внедрить веб-сокеты или Server-Sent Events для реального обновления ленты и уведомлений.
+- Сделать тёмную тему с переключателем и запоминанием выбора.
+- Подключить файло- и медиахранилище для загрузки изображений и видео в постах.
+- Реализовать поиск по контенту и фильтрацию ленты (теги, даты, популярность).
+- Добавить пагинацию и сортировку как альтернативу бесконечной прокрутке.
+- Разработать админ-панель для модерации постов и управления пользователями.
+- Расширить авторизацию через OAuth (Google, GitHub) и социальные сети.
+- Интегрировать систему уведомлений (email, push) о новых лайках и комментариях.
+- Настроить CI/CD-процессы, покрыть код тестами (unit, integration, e2e).
+- Запаковать приложение в Docker-контейнеры и задеплоить в облако.
