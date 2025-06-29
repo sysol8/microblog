@@ -1,0 +1,9 @@
+.post {
+    display: grid;
+    border-radius: 8px;
+    padding-inline: 0.8rem;
+    padding-block: 0.4rem;
+    font-size: 1.6rem;
+    grid-template-rows: repeat(3, min-content);
+    background-color: #ffffff;
+}

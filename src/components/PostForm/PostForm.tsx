@@ -1,17 +1,20 @@
+import SendIcon from "../../assets/icons/send.svg?react";
+import ClearIcon from "../../assets/icons/clear.svg?react";
 import styles from "./PostForm.module.css";
-import { type FormEvent, type ChangeEvent } from 'react';
-import { useState, useRef, useEffect } from "react";
+import { type FormEvent, type ChangeEvent } from "react";
+import { useState } from "react";
 
 export default function PostForm() {
   const [text, setText] = useState<string>("");
   const maxLen = 500;
 
-    const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-      setText(e.target.value);
-    }
+  const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setText(e.target.value);
+  };
 
   const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
+    setText("");
   };
 
   return (
@@ -20,9 +23,8 @@ export default function PostForm() {
         Новый пост
         <textarea
           id="text"
-
           className={styles.input}
-          placeholder="Текст"
+          placeholder="Расскажите, о чем вы думаете..."
           value={text}
           onChange={handleInputChange}
           maxLength={maxLen}
@@ -30,9 +32,16 @@ export default function PostForm() {
         <span className={styles.counter}>
           {text.length}/{maxLen}
         </span>
+        {text && (
+          <button className={styles.clear} onClick={() => setText("")}>
+            <ClearIcon
+              className={`${styles.clearIcon} ${styles.icon}`}
+            ></ClearIcon>
+          </button>
+        )}
       </label>
       <button className={styles.submit} type="submit">
-        Сабмит
+        <SendIcon className={`${styles.submitIcon} ${styles.icon}`}></SendIcon>
       </button>
     </form>
   );

@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from models import User, Post
+from .models import Post
 
 router = APIRouter(prefix="/api/posts", tags=["posts"])
 

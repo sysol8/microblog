@@ -1,10 +1,11 @@
-import { Outlet } from 'react-router';
+import styles from './AppLayout.module.css';
+import { Outlet } from "react-router";
 import Header from "../components/layout/Header/Header.tsx";
 import Footer from "../components/layout/Footer/Footer.tsx";
 
-export default function Layout() {
+export default function AppLayout() {
   return (
-    <div id="root">
+    <div className={styles.layout}>
       <Header></Header>
       <Outlet />
       <Footer></Footer>

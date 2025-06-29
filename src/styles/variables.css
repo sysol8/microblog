@@ -1,7 +1,10 @@
 :root {
     --text-color: #fff;
     --background-color: #000;
+    --hover-color: #bfbfbf;
     --primary-color: #bdd9bf;
     --accent-color: #2e4052;
     --contrast-color: #ffc857;
+
+    --content-padding-inline: 1.6rem;
 }
