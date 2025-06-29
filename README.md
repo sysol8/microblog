@@ -22,7 +22,7 @@
 
 ## Архитектура
 - Корневой компонент App и маршруты в main.tsx.
-- Layout-компонент с шапкой, боковой панелью и футером.
+- AppLayout-компонент с шапкой, боковой панелью и футером.
 - Папки pages для экранов (FeedPage, PostPage, ProfilePage).
 - Папка components для переиспользуемых UI-блоков (PostCard, Avatar, Button).
 - Папка hooks для кастомных хуков (useAuth, useInfiniteScroll, useApi).
