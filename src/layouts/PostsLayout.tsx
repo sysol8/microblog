@@ -7,5 +7,5 @@ export default function PostsLayout() {
       <PostsList></PostsList>
       <PostForm></PostForm>
     </>
-  )
+  );
 }

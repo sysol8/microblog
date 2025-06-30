@@ -4,19 +4,22 @@ import { Link } from 'react-router';
 export default function Header() {
   return (
     <header className={styles.header}>
-      <nav className={styles.nav}>
-        <ul className={styles.list}>
-          <li className={styles.item}>
-            <Link to="/" className={styles.link}>Все посты</Link>
-          </li>
-          <li className={styles.item}>
-            <Link to="/posts/my" className={styles.link}>Мои посты</Link>
-          </li>
-          <li className={styles.item}>
-            <Link to="/users/me" className={styles.link}>Профиль</Link>
-          </li>
-        </ul>
-      </nav>
+      <div className={styles.layout}>
+        <Link to="/" className={styles.logoLink}>Placeholder</Link>
+        <nav className={styles.nav}>
+          <ul className={styles.list}>
+            <li className={styles.item}>
+              <Link to="/" className={styles.link}>Лента</Link>
+            </li>
+            <li className={styles.item}>
+              <Link to="/posts/my" className={styles.link}>Мои посты</Link>
+            </li>
+            <li className={styles.item}>
+              <Link to="/users/me" className={styles.link}>Профиль</Link>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </header>
   )
 }

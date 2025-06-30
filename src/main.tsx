@@ -1,7 +1,10 @@
+// @ts-expect-error / подключение шрифта fontsource
+import "@fontsource-variable/open-sans";
+import './index.css'
+
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from "react-router";
-import './index.css'
 
 import AppLayout from './layouts/AppLayout.tsx'
 import PostsLayout from "./layouts/PostsLayout.tsx";

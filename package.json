@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "server" : "cd server && call venv\\Scripts\\activate.bat && fastapi dev"
+    "server": "cd server && call venv\\Scripts\\activate.bat && fastapi dev"
   },
   "dependencies": {
     "@fontsource-variable/open-sans": "^5.2.6",
@@ -25,6 +25,9 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.2.0",
+    "postcss": "^8.5.6",
+    "postcss-cli": "^11.0.1",
+    "postcss-sorting": "^9.1.0",
     "prettier": "^3.6.2",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.34.1",

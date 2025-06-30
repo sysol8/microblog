@@ -1,7 +1,45 @@
-.header {}
+.header {
+  display: block;
+  color: var(--text-color);
+  font-size: 1.6rem;
+  line-height: 1;
+  background-color: var(--primary-color);
+  block-size: 6rem;
+}
+
+.layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.2rem;
+  margin: 0 auto;
+  block-size: 100%;
+  max-inline-size: 128rem;
+}
+
+.logoLink {
+  display: inline-block;
+  font-size: 2.4rem;
+}
+
+.logo {
+  fill: white;
+}
+
+.nav {
+}
 
 .list {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2.4rem;
+}
+
+.item {
+  font-variation-settings: "wght" 500;
+
+  &:hover {
+    opacity: var(--hover-opacity);
+  }
 }

@@ -1,82 +1,85 @@
 .form {
-    display: grid;
-    background-color: #ffffff;
-    grid-template-rows: 1fr min-content;
-    position: fixed;
-    bottom: 3.2rem;
-    left: 50%;
-    max-inline-size: 64rem;
-    inline-size: calc(100% - var(--content-padding-inline) * 4);
-    transform: translateX(-50%);
-    overflow: hidden;
-    border-radius: 8px;
-    padding-block: 0.8rem;
-    padding-inline: 1.2rem;
-    row-gap: 0.8rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  position: fixed;
+  bottom: 3.2rem;
+  left: 50%;
+  display: grid;
+  grid-template-rows: 1fr min-content;
+  row-gap: 0.8rem;
+  border-radius: 8px;
+  padding-inline: 1.2rem;
+  padding-block: 0.8rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  background-color: #ffffff;
+  transform: translateX(-50%);
+  inline-size: calc(100% - var(--content-padding-inline) * 4);
+  max-inline-size: var(--main-inline-size);
 }
 
 .label {
-    display: flex;
-    flex-direction: column;
-    font-size: 1.8rem;
-    color: var(--background-color);
-    gap: 0.8rem;
-    position: relative;
-    line-height: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  color: var(--background-color);
+  font-size: 1.8rem;
+  line-height: 1;
 }
 
 .input {
-    resize: none;
-    border: 2px solid rgba(0, 0, 0, 0.5);
-    border-radius: 4px;
-    overflow: hidden;
-    padding-block: 0.4rem;
-    padding-inline: 0.6rem 3rem;
-    min-block-size: 8.8rem;
-    font-size: 1.5rem;
-    font-family: inherit;
+  border: 2px solid rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  padding-inline: 0.6rem 3rem;
+  padding-block: 0.4rem;
+  overflow: hidden;
+  font-family: inherit;
+  font-size: 1.5rem;
+  resize: none;
+  min-block-size: 8.8rem;
 
-    &:focus-visible, &:active {
-        border-color: rgba(0, 0, 0, 1);
-    }
+  &:focus-visible,
+  &:active {
+    border-color: rgba(0, 0, 0, 1);
+  }
 }
 
 .input::placeholder {
-    color: var(--background-color);
-    opacity: 0.8;
-    font: inherit;
+  opacity: 0.8;
+  color: var(--background-color);
+  font: inherit;
 }
 
 .counter {
-    position: absolute;
-    right: 0;
-    top: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .clear {
-    position: absolute;
-    display: inline-block;
-    block-size: 2.4rem;
-    inline-size: 2.4rem;
-    right: 0;
-    top: 2.6rem;
+  position: absolute;
+  top: 2.6rem;
+  right: 0;
+  display: inline-block;
+  block-size: 2.4rem;
+  inline-size: 2.4rem;
 }
 
-.clearIcon {}
+.clearIcon {
+}
 
 .submit {
-    grid-row: 2;
-    display: inline-block;
-    block-size: 3.2rem;
-    inline-size: 3.2rem;
-    justify-self: end;
+  display: inline-block;
+  grid-row: 2;
+  justify-self: end;
+  block-size: 3.2rem;
+  inline-size: 3.2rem;
 }
 
-.submitIcon {}
+.submitIcon {
+}
 
 .icon {
-    width: 100%;
-    height: 100%;
-    margin: auto;
+  width: 100%;
+  height: 100%;
+  margin: auto;
 }

@@ -1,10 +1,16 @@
 :root {
-    --text-color: #fff;
-    --background-color: #000;
-    --hover-color: #bfbfbf;
-    --primary-color: #bdd9bf;
-    --accent-color: #2e4052;
-    --contrast-color: #ffc857;
+    --text-color: #f5f5f5;
+    --text-color-dark: #000;
+    --background-color: #888d9b;
+    --foreground-color: #202526;
+    --primary-color: #293132;
+    --secondary-color: #474044;
+    --accent-color: #4f5165;
+
+    --hover-opacity: 0.8;
 
     --content-padding-inline: 1.6rem;
+
+    --layout-inline-size: 128rem;
+    --main-inline-size: 64rem;
 }

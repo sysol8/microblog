@@ -1,9 +1,37 @@
 .post {
-    display: grid;
-    border-radius: 8px;
-    padding-inline: 0.8rem;
-    padding-block: 0.4rem;
-    font-size: 1.6rem;
-    grid-template-rows: repeat(3, min-content);
-    background-color: #ffffff;
+  max-inline-size: 64rem;
+  display: grid;
+  grid-template-rows: repeat(3, min-content);
+  border-radius: 8px;
+  padding-inline: 0.8rem;
+  padding-block: 0.4rem;
+  font-size: 1.5rem;
+  background-color: var(--foreground-color);
+  color: var(--text-color);
+}
+
+.header {
+  display: flex;
+
+}
+
+.content {
+  line-height: 1.5;
+  font-variation-settings: "wght" 350;
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.avatar {
+  object-fit: cover;
+  block-size: 4.8rem;
+  inline-size: 4.8rem;
+}
+
+.name {
+  font-size: 1.8rem;
 }

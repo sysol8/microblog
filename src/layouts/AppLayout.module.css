@@ -1,12 +1,8 @@
 .layout {
-  max-inline-size: 768px;
-  padding-inline: var(--content-padding-inline);
-  padding-block: 1.2rem;
-  inline-size: 100%;
-  background-color: #bfbfbf;
-  margin: 0 auto;
-  block-size: 100dvb;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  margin: 0 auto;
+  background-color: var(--background-color);
+  inline-size: 100%;
+  min-block-size: 100dvb;
 }
