@@ -8,6 +8,9 @@
     --accent-color: #4f5165;
 
     --hover-opacity: 0.8;
+    --disabled-opacity: 0.6;
+
+    --bd-radius: 0.8rem;
 
     --content-padding-inline: 1.6rem;
 

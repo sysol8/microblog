@@ -1,10 +1,13 @@
 import SendIcon from "../../assets/icons/send.svg?react";
-import ClearIcon from "../../assets/icons/clear.svg?react";
+import ClearIcon from "../../assets/icons/cancel.svg?react";
 import styles from "./PostForm.module.css";
-import { type FormEvent, type ChangeEvent } from "react";
-import { useState } from "react";
+import { type FormEvent, type ChangeEvent, useState } from "react";
 
-export default function PostForm() {
+interface PostFormProps {
+  onPostAdd: (content: string) => void;
+}
+
+export default function PostForm({ onPostAdd }: PostFormProps) {
   const [text, setText] = useState<string>("");
   const maxLen = 500;
 
@@ -14,6 +17,8 @@ export default function PostForm() {
 
   const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
+    if (!text.trim()) return;
+    onPostAdd(text);
     setText("");
   };
 
@@ -40,7 +45,7 @@ export default function PostForm() {
           </button>
         )}
       </label>
-      <button className={styles.submit} type="submit">
+      <button className={`${styles.submit} ${!text ? styles.submitDisabled : ''}`} type="submit" disabled={!text}>
         <SendIcon className={`${styles.submitIcon} ${styles.icon}`}></SendIcon>
       </button>
     </form>

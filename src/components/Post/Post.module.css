@@ -1,37 +1,117 @@
 .post {
-  max-inline-size: 64rem;
   display: grid;
   grid-template-rows: repeat(3, min-content);
+  row-gap: 1rem;
   border-radius: 8px;
-  padding-inline: 0.8rem;
-  padding-block: 0.4rem;
+  padding-inline: 1.2rem;
+  padding-block: 0.8rem;
+  color: var(--text-color);
   font-size: 1.5rem;
   background-color: var(--foreground-color);
-  color: var(--text-color);
+  max-inline-size: 64rem;
+  inline-size: 100%;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+
+    .author {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .avatar {
+      object-fit: cover;
+      block-size: 4.8rem;
+      inline-size: 4.8rem;
+    }
+
+    .name {
+      font-size: 1.8rem;
+    }
+
+    .time {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .content {
+    line-height: 1.5;
+    font-variation-settings: "wght" 350;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
+
+    .footerSection {
+      display: flex;
+      gap: 1.2rem;
+    }
+
+    .views {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+
+      .icon {
+        block-size: 2.4rem;
+        inline-size: 2.4rem;
+      }
+    }
+
+    .button {
+      color: var(--text-color);
+      block-size: 2.4rem;
+      inline-size: 2.4rem;
+    }
+  }
 }
 
-.header {
+.form {
   display: flex;
+  position: relative;
+  border: 1px solid var(--text-color);
+  border-radius: calc(var(--bd-radius) / 2);
+  min-block-size: 6.4rem;
 
-}
+  .label {
+    display: flex;
+    padding-inline-end: 6.4rem;
+    block-size: 100%;
+    inline-size: 100%;
 
-.content {
-  line-height: 1.5;
-  font-variation-settings: "wght" 350;
-}
+    .input {
+      color: inherit;
+      font: inherit;
+      inline-size: 100%;
+      min-block-size: 4rem;
+      block-size: 100%;
+      resize: none;
+    }
+  }
 
-.author {
-  display: flex;
-  align-items: center;
-  gap: 1.2rem;
-}
+  .buttons {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    block-size: 100%;
+    padding-inline-end: 0.4rem;
 
-.avatar {
-  object-fit: cover;
-  block-size: 4.8rem;
-  inline-size: 4.8rem;
-}
+    .button {
+      display: inline-block;
+      block-size: 2.4rem;
+      inline-size: 2.4rem;
 
-.name {
-  font-size: 1.8rem;
+      .icon {
+        block-size: 100%;
+        inline-size: 100%;
+      }
+    }
+  }
 }
