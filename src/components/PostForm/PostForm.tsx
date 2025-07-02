@@ -8,18 +8,18 @@ interface PostFormProps {
 }
 
 export default function PostForm({ onPostAdd }: PostFormProps) {
-  const [text, setText] = useState<string>("");
+  const [content, setContent] = useState<string>("");
   const maxLen = 500;
 
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setText(e.target.value);
+    setContent(e.target.value);
   };
 
   const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (!text.trim()) return;
-    onPostAdd(text);
-    setText("");
+    if (!content.trim()) return;
+    onPostAdd(content);
+    setContent("");
   };
 
   return (
@@ -30,22 +30,22 @@ export default function PostForm({ onPostAdd }: PostFormProps) {
           id="text"
           className={styles.input}
           placeholder="Расскажите, о чем вы думаете..."
-          value={text}
+          value={content}
           onChange={handleInputChange}
           maxLength={maxLen}
         ></textarea>
         <span className={styles.counter}>
-          {text.length}/{maxLen}
+          {content.length}/{maxLen}
         </span>
-        {text && (
-          <button className={styles.clear} onClick={() => setText("")}>
+        {content && (
+          <button className={styles.clear} onClick={() => setContent("")}>
             <ClearIcon
               className={`${styles.clearIcon} ${styles.icon}`}
             ></ClearIcon>
           </button>
         )}
       </label>
-      <button className={`${styles.submit} ${!text ? styles.submitDisabled : ''}`} type="submit" disabled={!text}>
+      <button className={`${styles.submit} ${!content ? styles.submitDisabled : ''}`} type="submit" disabled={!content}>
         <SendIcon className={`${styles.submitIcon} ${styles.icon}`}></SendIcon>
       </button>
     </form>

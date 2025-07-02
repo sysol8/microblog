@@ -1,13 +1,13 @@
 export interface IPost {
-  id: string;
-  author: string;
-  createdAt: string;
+  id: number;
+  author?: IUser;
   content: string;
-  isLiked: boolean;
-  likes: number;
+  createdAt?: string;
+  isLiked?: boolean;
+  likes?: number;
 }
 
-export interface User {
+export interface IUser {
   id?: string;
   name: string;
   avatarUrl: string;

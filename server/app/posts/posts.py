@@ -7,14 +7,14 @@ from .schemas import PostCreate, PostRead, PostUpdate
 
 router = APIRouter(prefix="/api/posts", tags=["posts"])
 
-@router.get("/", response_model=list[PostRead])
+@router.get("/", response_model=list[PostRead], response_model_by_alias=True)
 def read_posts(
         session: Session = Depends(get_session)
 ):
     posts = session.exec(select(Post).order_by(Post.created_at.desc())).all()
     return posts
 
-@router.post("/", response_model=PostRead, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=PostRead, status_code=status.HTTP_201_CREATED, response_model_by_alias=True)
 def create_post(
         data: PostCreate,
         session: Session = Depends(get_session)
@@ -25,7 +25,7 @@ def create_post(
     session.refresh(post)
     return post
 
-@router.patch("/{post_id}", response_model=PostRead)
+@router.patch("/{post_id}", response_model=PostRead, response_model_by_alias=True)
 def edit_post(
         post_id: int,
         data: PostUpdate,
@@ -40,7 +40,7 @@ def edit_post(
     session.refresh(post)
     return post
 
-@router.delete("/{post_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{post_id}", status_code=status.HTTP_204_NO_CONTENT, response_model_by_alias=True)
 def delete_post(
         post_id: int,
         session: Session = Depends(get_session)

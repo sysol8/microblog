@@ -1,4 +1,3 @@
-import type { User } from "../../utils/types.ts";
 import styles from "./Post.module.css";
 import CancelIcon from "../../assets/icons/cancel.svg?react";
 import SaveIcon from "../../assets/icons/save.svg?react";
@@ -7,14 +6,12 @@ import EditIcon from "../../assets/icons/edit.svg?react";
 import DeleteIcon from "../../assets/icons/delete.svg?react";
 import RepostIcon from "../../assets/icons/repost.svg?react";
 import ViewsIcon from "../../assets/icons/views.svg?react";
+import type { IPost } from "../../utils/types.ts";
+import { editPost } from "../../api/posts.ts";
 import { useState, type FormEvent, type ChangeEvent } from "react";
 
-interface PostProps {
-  author?: User;
-  content: string;
-  createdAt?: string;
-  isLiked?: boolean;
-  likesCount?: number;
+interface PostProps extends IPost {
+  onDelete: (id: number) => void;
 }
 
 function EditPostForm({
@@ -61,25 +58,25 @@ function EditPostForm({
   );
 }
 
-export default function Post({ createdAt }: PostProps) {
+export default function Post({ id, content, createdAt, onDelete }: PostProps) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [currentContent, setCurrentContent] = useState<string>("");
+  const [currentContent, setCurrentContent] = useState<string>(content);
+
+  const startEdit = () => setIsEditing(true);
+  const cancelEdit = () => setIsEditing(false);
+  const saveEdit = async (newContent: string) => {
+    try {
+      const editedPost = await editPost(id, newContent);
+      setCurrentContent(editedPost.content);
+      setIsEditing(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const iso = createdAt ?? "";
   const [date, timeWithMs = ""] = iso.split("T");
   const time = timeWithMs.split(".")[0];
-
-  const startEdit = () => {
-    setIsEditing(true);
-  };
-
-  const cancelEdit = () => {
-    setIsEditing(false);
-  };
-
-  const saveEdit = (newContent: string) => {
-    setCurrentContent(newContent);
-    setIsEditing(false);
-  };
 
   return (
     <article className={styles.post}>
@@ -123,7 +120,11 @@ export default function Post({ createdAt }: PostProps) {
           >
             <EditIcon className={styles.icon}></EditIcon>
           </button>
-          <button className={styles.button} aria-label="Удалить">
+          <button
+            className={styles.button}
+            onClick={() => onDelete(id)}
+            aria-label="Удалить"
+          >
             <DeleteIcon className={styles.icon}></DeleteIcon>
           </button>
           <div className={styles.views} aria-label="Просмотры">
