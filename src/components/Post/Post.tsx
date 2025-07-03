@@ -9,6 +9,7 @@ import ViewsIcon from "../../assets/icons/views.svg?react";
 import type { IPost } from "../../utils/types.ts";
 import { editPost } from "../../api/posts.ts";
 import { useState, type FormEvent, type ChangeEvent } from "react";
+import { maxLen } from "../PostForm/PostForm.tsx";
 
 interface PostProps extends IPost {
   onDelete: (id: number) => void;
@@ -44,6 +45,7 @@ function EditPostForm({
           rows={4}
           value={value}
           onChange={handleChange}
+          maxLength={maxLen}
         ></textarea>
       </label>
       <div className={styles.buttons}>
@@ -75,8 +77,8 @@ export default function Post({ id, content, createdAt, onDelete }: PostProps) {
   };
 
   const iso = createdAt ?? "";
-  const [date, timeWithMs = ""] = iso.split("T");
-  const time = timeWithMs.split(".")[0];
+  const [date, timePart] = iso.split("T");
+  const time = timePart?.slice(0, 5) ?? "";
 
   return (
     <article className={styles.post}>
@@ -108,6 +110,7 @@ export default function Post({ id, content, createdAt, onDelete }: PostProps) {
           <button className={styles.button} aria-label="Нравится">
             <LikeIcon className={styles.icon}></LikeIcon>
           </button>
+          <span className={styles.count}></span>
           <button className={styles.button} aria-label="Поделиться">
             <RepostIcon className={styles.icon}></RepostIcon>
           </button>

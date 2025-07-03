@@ -1,9 +1,9 @@
 import styles from "./PostsLayout.module.css";
 import { useState, useEffect } from "react";
-import PostsList from "../components/PostsList/PostsList.tsx";
-import PostForm from "../components/PostForm/PostForm.tsx";
-import type { IPost } from "../utils/types.ts";
-import { getPosts, createPost, deletePost } from "../api/posts.ts";
+import PostsList from "../../components/PostsList/PostsList.tsx";
+import PostForm from "../../components/PostForm/PostForm.tsx";
+import type { IPost } from "../../utils/types.ts";
+import { getPosts, createPost, deletePost } from "../../api/posts.ts";
 
 export default function PostsLayout() {
   const [posts, setPosts] = useState<IPost[]>([]);
@@ -18,7 +18,11 @@ export default function PostsLayout() {
       }
     }
 
+    let active = true;
     loadPosts();
+    return () => {
+      active = false;
+    };
   }, []);
 
   const handlePostAdd = async (content: string) => {

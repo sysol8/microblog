@@ -7,9 +7,10 @@ interface PostFormProps {
   onPostAdd: (content: string) => void;
 }
 
+export const maxLen: number = 500;
+
 export default function PostForm({ onPostAdd }: PostFormProps) {
   const [content, setContent] = useState<string>("");
-  const maxLen = 500;
 
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);

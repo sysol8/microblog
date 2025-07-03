@@ -41,6 +41,11 @@ select {
   outline: none;
 }
 
+input, textarea {
+  color: inherit;
+  font: inherit;
+}
+
 img {
   width: 100%;
 }

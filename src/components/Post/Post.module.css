@@ -32,14 +32,18 @@
     }
 
     .time {
+      font-size: 1.4rem;
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      align-items: end;
+      opacity: var(--hover-opacity);
     }
   }
 
   .content {
     line-height: 1.5;
     font-variation-settings: "wght" 350;
+    white-space: pre-wrap;
   }
 
   .footer {
