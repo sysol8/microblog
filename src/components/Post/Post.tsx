@@ -15,15 +15,17 @@ interface PostProps extends IPost {
   onDelete: (id: number) => void;
 }
 
+interface EditPostFormProps {
+  content: string;
+  onCancel: () => void;
+  onSave: (newContent: string) => void;
+}
+
 function EditPostForm({
   content,
   onCancel,
   onSave,
-}: {
-  content: string;
-  onCancel: () => void;
-  onSave: (newContent: string) => void;
-}) {
+}: EditPostFormProps) {
   const [value, setValue] = useState(content);
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {

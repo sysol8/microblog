@@ -3,7 +3,8 @@
   color: var(--text-color);
   font-size: 1.6rem;
   line-height: 1;
-  background-color: var(--primary-color);
+  background: var(--primary-950);
+  border-bottom: 1px solid var(--primary-900);
   block-size: 6rem;
 }
 
@@ -23,23 +24,44 @@
 }
 
 .logo {
-  fill: white;
+  fill: var(--text-50);
 }
 
 .nav {
+  block-size: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .list {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 2.4rem;
+  block-size: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, min-content);
 }
 
 .item {
   font-variation-settings: "wght" 500;
+  transition: background-color 0.2s ease, color 0.2s ease;
 
   &:hover {
-    opacity: var(--hover-opacity);
+    background-color: var(--secondary-200);
+    color: var(--text-900);
+  }
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  block-size: 100%;
+  inline-size: 100%;
+  text-align: center;
+  text-wrap: nowrap;
+  padding-inline: 1.2rem;
+  text-decoration: 1px underline transparent;
+  text-underline-offset: 0.5rem;
+
+  &:focus-visible {
+    text-decoration-color: currentColor;
   }
 }

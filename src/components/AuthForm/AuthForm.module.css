@@ -2,8 +2,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: var(--primary-color);
-  color: var(--text-color);
+  background-color: var(--primary-950);
+  border: 3px solid var(--primary-800);
+  color: var(--text-50);
   padding-inline: 1.2rem;
   padding-block: 2.4rem;
   max-inline-size: 32rem;
@@ -14,7 +15,18 @@
 }
 
 .tabs {
-  border-bottom: 1px solid var(--accent-color);
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1.6rem;
+  position: relative;
+}
+
+.switcher {
+  border: 2px solid transparent;
+}
+
+.switcher.active {
+  border-bottom-color: var(--primary-700);
 }
 
 .form {
@@ -36,12 +48,20 @@
 }
 
 .input {
-  border: 2px solid var(--accent-color);
+  border: 2px solid var(--primary-900);
   border-radius: calc(var(--bd-radius) / 2);
   line-height: 1;
   font-size: 1.4rem;
   padding-inline: 0.8rem;
   padding-block: 0.8rem;
+
+  &:hover {
+    border-color: var(--primary-800);
+  }
+
+  &:focus-visible {
+    border-color: var(--primary-700);
+  }
 }
 
 .buttons {
@@ -51,8 +71,18 @@
 }
 
 .button {
-  background-color: var(--accent-color);
+  background-color: var(--accent-800);
+  color: var(--text-50);
+  font-variation-settings: "wght" 400;
   border-radius: calc(var(--bd-radius) / 2);
   padding-inline: 0.8rem;
   padding-block: 0.4rem;
+  transition: box-shadow 0.2s ease;
 }
+
+.action {
+  background-color: var(--primary-400);
+  color: var(--text-950);
+}
+
+

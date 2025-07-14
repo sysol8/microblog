@@ -28,58 +28,93 @@ export default function AuthForm() {
 }
 
 function LoginForm() {
-  const [form, setForm] = useState({ username: "", password: ""});
+  const [form, setForm] = useState({ username: "", password: "" });
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-  }
+    e.preventDefault();
+  };
 
   return (
     <form onSubmit={handleFormSubmit} className={styles.form}>
       <label className={styles.label} htmlFor="username">
         Имя пользователя
-        <input className={styles.input} id="username" type="text" placeholder="...или email" onChange={handleInputChange} />
+        <input
+          className={styles.input}
+          id="username"
+          name="username"
+          type="text"
+          value={form.username}
+          placeholder="...или email"
+          onChange={handleInputChange}
+        />
       </label>
       <label className={styles.label} htmlFor="password">
         Пароль
-        <input className={styles.input} id="password" type="password" onChange={handleInputChange} />
+        <input
+          className={styles.input}
+          id="password"
+          name="password"
+          type="password"
+          value={form.password}
+          onChange={handleInputChange}
+        />
       </label>
       <div className={styles.buttons}>
-        <button className={styles.button} type="submit">Войти</button>
-        <button className={styles.button} type="button">Забыли пароль?</button>
+        <button className={`${styles.button} ${styles.action}`} type="submit">
+          Войти
+        </button>
+        <button className={styles.button} type="button">
+          Забыли пароль?
+        </button>
       </div>
     </form>
-  )
+  );
 }
 
 function RegisterForm() {
-  const [form, setForm] = useState({ username: "", password: ""});
+  const [form, setForm] = useState({ username: "", password: "" });
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-  }
+    e.preventDefault();
+  };
 
   return (
     <form onSubmit={handleFormSubmit} className={styles.form}>
       <label className={styles.label} htmlFor="username">
         Имя пользователя
-        <input className={styles.input} id="username" type="text" onChange={handleInputChange} />
+        <input
+          className={styles.input}
+          id="username"
+          type="text"
+          name="username"
+          value={form.username}
+          onChange={handleInputChange}
+        />
       </label>
       <label className={styles.label} htmlFor="password">
         Пароль
-        <input className={styles.input} id="password" type="password" onChange={handleInputChange} />
+        <input
+          className={styles.input}
+          id="password"
+          type="password"
+          name="password"
+          value={form.password}
+          onChange={handleInputChange}
+        />
       </label>
       <div className={styles.buttons}>
-        <button className={styles.button} type="submit">Зарегистрироваться</button>
+        <button className={`${styles.button} ${styles.action}`} type="submit">
+          Зарегистрироваться
+        </button>
       </div>
     </form>
-  )
+  );
 }

@@ -1,17 +1,17 @@
 .form {
   bottom: 3.2rem;
   position: sticky;
-  left: 50%;
+  margin: 0 auto;
   display: grid;
   grid-template-rows: 1fr min-content;
   row-gap: 0.8rem;
   border-radius: 8px;
   padding-inline: 1.2rem;
   padding-block: 0.8rem;
-  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.4);
   overflow: hidden;
-  background-color: #ffffff;
-  transform: translateX(-50%);
+  background-color: var(--background-color-light);
+  border: 3px solid var(--border-color);
+  color: var(--text-color);
   inline-size: calc(100% - var(--content-padding-inline) * 4);
   max-inline-size: var(--main-inline-size);
 }
@@ -20,18 +20,17 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
-  color: var(--background-color);
+  gap: 1.2rem;
   font-size: 1.8rem;
   line-height: 1;
 }
 
 .input {
-  border: 2px solid rgba(0, 0, 0, 0.5);
+  border: 2px solid var(--border-color-muted);
   border-radius: 4px;
-  padding-inline: 0.6rem 3rem;
-  padding-block: 0.4rem;
-  overflow: hidden;
+  padding-inline: 0.8rem 3rem;
+  padding-block: 1rem;
+  overflow-y: auto;
   font-family: inherit;
   font-size: 1.5rem;
   resize: none;
@@ -39,26 +38,34 @@
 
   &:focus-visible,
   &:active {
-    border-color: rgba(0, 0, 0, 1);
+    border-color: var(--border-color);
+  }
+
+  &::placeholder {
+    color: var(--text-color-muted);
+    font: inherit;
   }
 }
 
-.input::placeholder {
-  opacity: 0.8;
-  color: var(--background-color);
-  font: inherit;
+.fileLabel {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  font-size: 1.4rem;
+  gap: 0.8rem;
 }
 
 .counter {
   position: absolute;
   top: 0;
   right: 0;
+  color: var(--text-color-muted);
 }
 
 .clear {
   position: absolute;
-  top: 2.6rem;
-  right: 0;
+  top: 2.8rem;
+  right: 1.6rem;
   display: inline-block;
   block-size: 2.4rem;
   inline-size: 2.4rem;
@@ -74,15 +81,23 @@
   block-size: 3.2rem;
   inline-size: 3.2rem;
   transition: opacity 0.2s ease;
+  pointer-events: none;
 }
 
-.submitDisabled {
-  pointer-events: none;
-  opacity: var(--disabled-opacity);
+.submitEnabled {
+  pointer-events: initial;
+  stroke: var(--text-color);
+}
+
+.buttons {
+  align-self: center;
+  justify-self: end;
+  display: flex;
+  gap: 0.8rem;
+  stroke: var(--text-color-muted);
 }
 
 .icon {
-  width: 100%;
-  height: 100%;
-  margin: auto;
+  block-size: 3.2rem;
+  inline-size: 3.2rem;
 }

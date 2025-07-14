@@ -7,7 +7,7 @@
   padding-block: 0.8rem;
   color: var(--text-color);
   font-size: 1.5rem;
-  background-color: var(--foreground-color);
+  background-color: var(--background-color);
   max-inline-size: 64rem;
   inline-size: 100%;
 
@@ -44,6 +44,7 @@
     line-height: 1.5;
     font-variation-settings: "wght" 350;
     white-space: pre-wrap;
+    word-break: break-all;
   }
 
   .footer {
