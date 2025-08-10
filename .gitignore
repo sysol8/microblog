@@ -14,6 +14,8 @@ dist-ssr
 venv
 .env
 
+server/aws_test.py
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
