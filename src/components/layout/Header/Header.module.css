@@ -44,8 +44,7 @@
   transition: background-color 0.2s ease, color 0.2s ease;
 
   &:hover {
-    background-color: var(--secondary-200);
-    color: var(--text-900);
+    background-color: var(--primary-900);
   }
 }
 
