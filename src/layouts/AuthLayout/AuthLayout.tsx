@@ -1,4 +1,4 @@
-import styles from './AuthLayout.module.css';
+import styles from "./AuthLayout.module.css";
 import AuthForm from "../../components/AuthForm/AuthForm.tsx";
 
 export default function AuthLayout() {
@@ -6,5 +6,5 @@ export default function AuthLayout() {
     <main className={styles.content}>
       <AuthForm />
     </main>
-  )
+  );
 }
