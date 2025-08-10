@@ -1,0 +1,26 @@
+.alert {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  max-inline-size: 24rem;
+  inline-size: 100%;
+  border: 2px solid transparent;
+  border-radius: var(--bd-radius);
+  font-size: 1.6rem;
+}
+
+.success {
+  background-color: var(--primary-500);
+  border-color: var(--primary-400);
+}
+
+.warning {
+  background-color: var(--secondary-100);
+  border-color: var(--secondary-400);
+  color: var(--secondary-400);
+}
+
+.icon {
+  block-size: 3.2rem;
+  inline-size: 3.2rem;
+}

@@ -13,27 +13,34 @@ const ALERT_TYPE_CONFIG = {
   success: {
     Icon: SuccessIcon,
     className: styles.success,
+    header: 'Успех'
   },
   warning: {
     Icon: WarningIcon,
     className: styles.warning,
+    header: 'Предупреждение'
   },
   error: {
     Icon: ErrorIcon,
     className: styles.error,
+    header: 'Ошибка'
   },
   info: {
     Icon: InfoIcon,
-    className: styles.info
+    className: styles.info,
+    header: 'Информация'
   }
 } as const;
 
 export default function Alert({ type, message }: AlertProps) {
-  const { Icon, className } = ALERT_TYPE_CONFIG[type];
+  const { Icon, className, header } = ALERT_TYPE_CONFIG[type];
   return (
     <div className={`${styles.alert} ${className}`}>
       <Icon className={styles.icon}></Icon>
-      <span className={styles.message}>{message}</span>
+      <div className={styles.text}>
+        <h4>{header}</h4>
+        <p className={styles.message}>{message}</p>
+      </div>
     </div>
   )
 }
