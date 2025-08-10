@@ -3,7 +3,7 @@ import { useState, type FormEvent, type ChangeEvent } from "react";
 
 type AuthMode = "login" | "register";
 
-export default function AuthForm() {
+function AuthForm() {
   const [mode, setMode] = useState<AuthMode>("login");
 
   return (
@@ -13,13 +13,13 @@ export default function AuthForm() {
           className={`${styles.switcher} ${mode === "login" ? styles.active : ""}`}
           onClick={() => setMode("login")}
         >
-          Sign In
+          Вход
         </button>
         <button
           className={`${styles.switcher} ${mode === "register" ? styles.active : ""}`}
           onClick={() => setMode("register")}
         >
-          Sign Up
+          Регистрация
         </button>
       </div>
       {mode === "login" ? <LoginForm /> : <RegisterForm />}
@@ -48,7 +48,7 @@ function LoginForm() {
           name="username"
           type="text"
           value={form.username}
-          placeholder="...или email"
+          placeholder="ivanov.ivan123"
           onChange={handleInputChange}
         />
       </label>
@@ -56,6 +56,7 @@ function LoginForm() {
         Пароль
         <input
           className={styles.input}
+          placeholder="••••••••"
           id="password"
           name="password"
           type="password"
@@ -95,6 +96,7 @@ function RegisterForm() {
           id="username"
           type="text"
           name="username"
+          placeholder="ivanov.ivan123"
           value={form.username}
           onChange={handleInputChange}
         />
@@ -106,6 +108,7 @@ function RegisterForm() {
           id="password"
           type="password"
           name="password"
+          placeholder="••••••••"
           value={form.password}
           onChange={handleInputChange}
         />
@@ -118,3 +121,5 @@ function RegisterForm() {
     </form>
   );
 }
+
+export default AuthForm;
