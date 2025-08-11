@@ -7,73 +7,73 @@
   padding-block: 0.8rem;
   color: var(--text-color);
   font-size: 1.5rem;
-  background-color: var(--background-color);
+  background-color: var(--primary-950);
   max-inline-size: 64rem;
   inline-size: 100%;
-
-  .header {
-    display: flex;
-    justify-content: space-between;
-
-    .author {
-      display: flex;
-      align-items: center;
-      gap: 1.2rem;
-    }
-
-    .avatar {
-      object-fit: cover;
-      block-size: 4.8rem;
-      inline-size: 4.8rem;
-    }
-
-    .name {
-      font-size: 1.8rem;
-    }
-
-    .time {
-      font-size: 1.4rem;
-      display: flex;
-      flex-direction: column;
-      align-items: end;
-      opacity: var(--hover-opacity);
-    }
-  }
-
-  .content {
-    line-height: 1.5;
-    font-variation-settings: "wght" 350;
-    white-space: pre-wrap;
-    word-break: break-all;
-  }
-
-  .footer {
-    display: flex;
-    justify-content: space-between;
-
-    .footerSection {
-      display: flex;
-      gap: 1.2rem;
-    }
-
-    .views {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-
-      .icon {
-        block-size: 2.4rem;
-        inline-size: 2.4rem;
-      }
-    }
-
-    .button {
-      color: var(--text-color);
-      block-size: 2.4rem;
-      inline-size: 2.4rem;
-    }
-  }
 }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.avatar {
+  object-fit: cover;
+  block-size: 4.8rem;
+  inline-size: 4.8rem;
+}
+
+.name {
+  font-size: 1.8rem;
+}
+
+.time {
+  font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  opacity: var(--hover-opacity);
+}
+
+.content {
+  line-height: 1.5;
+  font-variation-settings: "wght" 350;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footerSection {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.views {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.button {
+  color: var(--text-color);
+}
+
+.icon {
+  block-size: 2.4rem;
+  inline-size: 2.4rem;
+}
+
+/* TODO: поправить отображение кнопки лайка */
 
 .form {
   display: flex;
@@ -81,42 +81,70 @@
   border: 1px solid var(--text-color);
   border-radius: calc(var(--bd-radius) / 2);
   min-block-size: 6.4rem;
+}
 
-  .label {
-    display: flex;
-    padding-inline-end: 6.4rem;
-    block-size: 100%;
+.label {
+  display: flex;
+  padding-inline-end: 6.4rem;
+  block-size: 100%;
+  inline-size: 100%;
+
+  .input {
+    color: inherit;
+    font: inherit;
     inline-size: 100%;
+    min-block-size: 4rem;
+    block-size: 100%;
+    resize: none;
+  }
+}
 
-    .input {
-      color: inherit;
-      font: inherit;
-      inline-size: 100%;
-      min-block-size: 4rem;
+.buttons {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  block-size: 100%;
+  padding-inline-end: 0.4rem;
+
+  .button {
+    display: inline-block;
+    block-size: 2.4rem;
+    inline-size: 2.4rem;
+
+    .icon {
       block-size: 100%;
-      resize: none;
+      inline-size: 100%;
     }
   }
+}
 
-  .buttons {
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    block-size: 100%;
-    padding-inline-end: 0.4rem;
+.likeButton {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-radius: 0.4rem;
+  padding-inline: 0.8rem 1.2rem;
+  padding-block: 0.4rem;
+  background-color: var(--primary-900);
+}
 
-    .button {
-      display: inline-block;
-      block-size: 2.4rem;
-      inline-size: 2.4rem;
+.attachments {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 0.8rem;
+  grid-auto-rows: 16rem;
+  grid-auto-flow: dense;
+}
 
-      .icon {
-        block-size: 100%;
-        inline-size: 100%;
-      }
-    }
+.attachedImage {
+  display: block;
+  object-fit: cover;
+  block-size: 100%;
+
+  &:hover {
+    cursor: pointer;
   }
 }
