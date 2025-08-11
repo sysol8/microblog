@@ -1,0 +1,45 @@
+.viewer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.button {
+  block-size: 100%;
+  inline-size: 12rem;
+  position: absolute;
+  top: 50%;
+  color: var(--text-50);
+  transform: translateY(-50%);
+
+  &:hover {
+    background-color: color-mix(in oklch, var(--text-950), transparent 50%);
+
+    .arrow {
+      visibility: visible;
+    }
+  }
+}
+
+.buttonLeft {
+  left: 0;
+}
+
+.buttonRight {
+  right: 0;
+}
+
+.arrow {
+  block-size: 4rem;
+  inline-size: 4rem;
+  visibility: hidden;
+}
+
+.arrowLeft {
+  transform: rotate(-90deg);
+}
+
+.arrowRight {
+  transform: rotate(90deg);
+}
