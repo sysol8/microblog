@@ -1,22 +1,24 @@
 .form {
-  bottom: 3.2rem;
   position: sticky;
-  margin: 0 auto;
+  bottom: 3.2rem;
   display: grid;
+  grid-template-columns: 1fr min-content;
   grid-template-rows: 1fr min-content;
   row-gap: 0.8rem;
+  margin: 0 auto;
+  border: 3px solid var(--border-color);
   border-radius: 8px;
   padding-inline: 1.2rem;
   padding-block: 0.8rem;
   overflow: hidden;
-  background-color: var(--background-color-light);
-  border: 3px solid var(--border-color);
   color: var(--text-color);
+  background-color: var(--background-color-light);
   inline-size: calc(100% - var(--content-padding-inline) * 4);
   max-inline-size: var(--main-inline-size);
 }
 
 .label {
+  grid-column: 1 / -1;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -47,12 +49,49 @@
   }
 }
 
+.files {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(16rem, 1fr));
+  grid-auto-rows: min-content;
+  gap: 0.8rem;
+  max-inline-size: 50%;
+  flex-wrap: wrap;
+}
+
+.attachedImageContainer {
+  position: relative;
+  inline-size: 100%;
+  aspect-ratio: 3/2;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:hover .attachedImage {
+    filter: brightness(0.5);
+  }
+}
+
+.attachedImage {
+  block-size: 100%;
+  inline-size: 100%;
+  object-fit: cover;
+}
+
+.remove {
+  position: absolute;
+  display: flex;
+  right: 0;
+  top: 0;
+}
+
 .fileLabel {
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
-  font-size: 1.4rem;
   gap: 0.8rem;
+  font-size: 1.4rem;
+  cursor: pointer;
 }
 
 .counter {
@@ -78,22 +117,22 @@
   display: inline-block;
   grid-row: 2;
   justify-self: end;
-  block-size: 3.2rem;
-  inline-size: 3.2rem;
   transition: opacity 0.2s ease;
   pointer-events: none;
+  block-size: 3.2rem;
+  inline-size: 3.2rem;
 }
 
 .submitEnabled {
-  pointer-events: initial;
   stroke: var(--text-color);
+  pointer-events: initial;
 }
 
 .buttons {
-  align-self: center;
-  justify-self: end;
   display: flex;
+  justify-self: end;
   gap: 0.8rem;
+  align-self: start;
   stroke: var(--text-color-muted);
 }
 
