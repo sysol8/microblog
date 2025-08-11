@@ -7,120 +7,76 @@ import DeleteIcon from "../../assets/icons/delete.svg?react";
 import RepostIcon from "../../assets/icons/repost.svg?react";
 import ViewsIcon from "../../assets/icons/views.svg?react";
 import type { IPost } from "../../utils/types.ts";
-import { editPost } from "../../api/posts.ts";
-import { useState, type FormEvent, type ChangeEvent } from "react";
-import { maxLen } from "../PostForm/PostForm.tsx";
+import { formatPostDate } from "../../vendor/dayjs.ts";
+import ImageModal from "../Modal/ImageModal/ImageModal.tsx";
+import { modal } from "../../store/modal.ts";
 
-interface PostProps extends IPost {
-  onDelete: (id: number) => void;
+export interface PostData {
+  data: IPost;
 }
 
-interface EditPostFormProps {
-  content: string;
-  onCancel: () => void;
-  onSave: (newContent: string) => void;
+export interface PostActions {
+  onDelete: (id: string) => void;
 }
 
-function EditPostForm({
-  content,
-  onCancel,
-  onSave,
-}: EditPostFormProps) {
-  const [value, setValue] = useState(content);
+type PostProps = PostData & PostActions;
 
-  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setValue(e.target.value);
-  };
+function Post({ data, onDelete }: PostProps) {
+  const { id, textContent, imageUrls, createdAt } = data;
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    onSave(value.trim());
+  const openImageViewer = (startIndex: number) => {
+    modal.open(<ImageModal urls={imageUrls} start={startIndex} />);
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <label htmlFor="edit" className={styles.label}>
-        <textarea
-          name="edit"
-          id="edit"
-          className={styles.input}
-          rows={4}
-          value={value}
-          onChange={handleChange}
-          maxLength={maxLen}
-        ></textarea>
-      </label>
-      <div className={styles.buttons}>
-        <button className={styles.button} type="button" onClick={onCancel}>
-          <CancelIcon className={styles.icon} />
-        </button>
-        <button className={styles.button} type="submit">
-          <SaveIcon className={styles.icon} />
-        </button>
-      </div>
-    </form>
-  );
-}
-
-export default function Post({ id, content, createdAt, onDelete }: PostProps) {
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [currentContent, setCurrentContent] = useState<string>(content);
-
-  const startEdit = () => setIsEditing(true);
-  const cancelEdit = () => setIsEditing(false);
-  const saveEdit = async (newContent: string) => {
-    try {
-      const editedPost = await editPost(id, newContent);
-      setCurrentContent(editedPost.content);
-      setIsEditing(false);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const iso = createdAt ?? "";
-  const [date, timePart] = iso.split("T");
-  const time = timePart?.slice(0, 5) ?? "";
-
-  return (
-    <article className={styles.post}>
+    <article key={id} className={styles.post}>
       <header className={styles.header}>
         <a className={styles.author} href="#">
           <img
             className={styles.avatar}
             src="https://avatars.mds.yandex.net/i?id=f78644096fc4284c375b1bba35ec71d7_l-5878100-images-thumbs&n=13"
-            alt="avatar"
+            alt={`Аватар пользователя`}
           ></img>
           <span className={styles.name}>Автор</span>
         </a>
         <time className={styles.time} dateTime={createdAt}>
-          <span>{date}</span>
-          <span>{time}</span>
+          {formatPostDate(createdAt)}
         </time>
       </header>
-      {isEditing ? (
-        <EditPostForm
-          content={currentContent}
-          onCancel={cancelEdit}
-          onSave={saveEdit}
-        />
-      ) : (
-        <p className={styles.content}>{currentContent}</p>
-      )}
+      <>
+        {textContent && <p className={styles.content}>{textContent}</p>}
+        {(imageUrls && imageUrls.length > 0) && (
+          <div className={styles.attachments}>
+            {imageUrls.map((url, index) => (
+                <img
+                  key={url}
+                  src={url}
+                  alt="Прикрепленное изображение"
+                  loading="lazy"
+                  className={styles.attachedImage}
+                  onClick={() => openImageViewer(index)}
+                />
+              ))}
+          </div>
+        )}
+      </>
       <footer className={styles.footer}>
         <div className={`${styles.footerLeft} ${styles.footerSection}`}>
-          <button className={styles.button} aria-label="Нравится">
+          <button
+            className={`${styles.button} ${styles.likeButton}`}
+            aria-label="Нравится"
+          >
             <LikeIcon className={styles.icon}></LikeIcon>
+            <span className={styles.likesCounter}>0</span>
           </button>
-          <span className={styles.count}></span>
           <button className={styles.button} aria-label="Поделиться">
             <RepostIcon className={styles.icon}></RepostIcon>
           </button>
         </div>
         <div className={`${styles.footerRight} ${styles.footerSection}`}>
           <button
+            type="button"
             className={styles.button}
-            onClick={startEdit}
             aria-label="Редактировать"
           >
             <EditIcon className={styles.icon}></EditIcon>
@@ -143,3 +99,5 @@ export default function Post({ id, content, createdAt, onDelete }: PostProps) {
     </article>
   );
 }
+
+export default Post;
