@@ -1,0 +1,61 @@
+.backdrop {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(8px);
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  block-size: 100%;
+  inline-size: 100%;
+}
+
+.modal {
+  position: relative;
+  max-inline-size: 50dvi;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  block-size: 6.4rem;
+  inline-size: 6.4rem;
+  color: var(--text-50);
+  display: flex;
+  transform: translate(50%, -50%);
+  z-index: 9999;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:active {
+    opacity: 0.5;
+  }
+
+  &:focus-visible {
+    outline: 1px solid currentColor;
+  }
+}
+
+.icon {
+  display: inline-block;
+  block-size: 100%;
+  inline-size: 100%;
+}
+
+.modalContent {
+  block-size: 100%;
+  inline-size: 100%;
+
+  img:focus {
+    outline: none;
+  }
+}
