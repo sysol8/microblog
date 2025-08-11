@@ -15,6 +15,8 @@ venv
 .env
 
 server/aws_test.py
+server/reset_db.py
+server/db.sqlite3
 
 # Editor directories and files
 .vscode/*
