@@ -13,5 +13,3 @@ def on_startup():
     SQLModel.metadata.create_all(engine)
 
 app.include_router(posts_router)
-
-
