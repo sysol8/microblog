@@ -1,4 +1,4 @@
-import { type IPost } from "../utils/types.ts";
+import {type ICreatePost, type IPost, type IPostContent} from "../utils/types.ts";
 
 const config = {
   baseURL: "http://localhost:8000",
@@ -35,31 +35,44 @@ export async function getPost(postId: number): Promise<IPost> {
   return parseJson<IPost>(response);
 }
 
-export async function createPost(content: string): Promise<IPost> {
+export async function createPost(content: ICreatePost): Promise<IPost> {
+  const formData = new FormData();
+  formData.append("text_content", content.textContent ?? "");
+  for (const file of content.attachments ?? []) {
+    formData.append("attachments", file);
+  }
   const response = await fetch(`${config.baseURL}/api/posts`, {
     method: "POST",
-    headers: config.headers,
     mode: "cors",
-    body: JSON.stringify({ content }),
+    body: formData,
+    headers: {
+      'x-amz-content-sha256': ''
+    }
   });
   return parseJson<IPost>(response);
 }
 
 export async function editPost(
-  postId: number,
-  content: string,
+  postId: string,
+  content: IPostContent,
 ): Promise<IPost> {
+  const formData = new FormData();
+  if (content.textContent !== undefined) {
+    formData.append("text_content", content.textContent);
+  }
+  for (const file of content.imageUrls ?? []) {
+    formData.append("attachments", file);
+  }
   const response = await fetch(`${config.baseURL}/api/posts/${postId}`, {
     method: "PATCH",
-    headers: config.headers,
     mode: "cors",
-    body: JSON.stringify({ content }),
+    body: formData,
   });
   return parseJson<IPost>(response);
 }
 
-export async function deletePost(postId: number): Promise<void> {
-  const response = await fetch(`${config.baseURL}/api/posts/${postId}`, {
+export async function deletePost(id: string): Promise<void> {
+  const response = await fetch(`${config.baseURL}/api/posts/${id}`, {
     method: "DELETE",
     headers: config.headers,
     mode: "cors",
