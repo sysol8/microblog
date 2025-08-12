@@ -29,10 +29,12 @@ interface IPostAuthor {
 }
 
 export interface IUser {
-  id?: string;
+  id: string;
   name: string;
+  username: string;
   avatarUrl: string;
-  email?: string;
-  password?: string;
-  createdAt?: string;
+  createdAt: string;
+  posts: string[];
+  liked: string[];
+  likes: number
 }
