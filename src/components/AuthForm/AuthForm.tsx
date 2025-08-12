@@ -1,10 +1,13 @@
 import styles from "./AuthForm.module.css";
 import { useState, type FormEvent, type ChangeEvent } from "react";
+import useUsers from "../../hooks/useUsers.ts";
+import type { AuthPayload } from "../../api/users.ts";
 
 type AuthMode = "login" | "register";
 
 function AuthForm() {
   const [mode, setMode] = useState<AuthMode>("login");
+  const { register, login } = useUsers();
 
   return (
     <div className={styles.container}>
@@ -22,20 +25,26 @@ function AuthForm() {
           Регистрация
         </button>
       </div>
-      {mode === "login" ? <LoginForm /> : <RegisterForm />}
+      {mode === "login" ? <LoginForm onSubmit={login} /> : <RegisterForm onSubmit={register}/>}
     </div>
   );
 }
 
-function LoginForm() {
+type FormActions = {
+  onSubmit: (payload: AuthPayload) => Promise<void>;
+}
+
+function LoginForm({ onSubmit }: FormActions) {
   const [form, setForm] = useState({ username: "", password: "" });
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!form.username.trim() || !form.password) return;
+    await onSubmit({ username: form.username, password: form.password });
   };
 
   return (
@@ -76,15 +85,17 @@ function LoginForm() {
   );
 }
 
-function RegisterForm() {
+function RegisterForm({ onSubmit }: FormActions) {
   const [form, setForm] = useState({ username: "", password: "" });
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!form.username.trim() || !form.password) return;
+    await onSubmit({ username: form.username, password: form.password });
   };
 
   return (
