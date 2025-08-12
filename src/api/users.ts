@@ -1,0 +1,55 @@
+import { type IUser } from "../utils/types.ts";
+import { ensureOk, BASE_URL, parseJson } from "./base.ts";
+
+async function getUser(id: string): Promise<IUser> {
+  const response = await fetch(`${BASE_URL}/api/users/${id}`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return parseJson<IUser>(response);
+}
+
+export type AuthPayload = {
+  username: string
+  password: string
+}
+
+async function register(payload: AuthPayload): Promise<void> {
+  const response = await fetch(`${BASE_URL}/api/register`, {
+    method: 'POST',
+    credentials: 'include',
+    mode: 'cors',
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  })
+  await ensureOk(response)
+}
+
+async function login(payload: AuthPayload): Promise<void> {
+  const response = await fetch(`${BASE_URL}/api/login`, {
+    method: 'POST',
+    credentials: 'include',
+    mode: 'cors',
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  })
+  await ensureOk(response)
+}
+
+async function logout(): Promise<void> {
+  const res = await fetch(`${BASE_URL}/api/logout`, {
+    method: "POST",
+    credentials: "include",
+    mode: "cors",
+  });
+  await ensureOk(res);
+}
+
+export { getUser, register, login, logout }
