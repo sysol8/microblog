@@ -6,13 +6,13 @@ from ..models import Post
 from .schemas import PostRead
 from ..aws import upload_to_s3
 
-router = APIRouter(prefix="/api/posts", tags=["posts"])
+posts_router = APIRouter(prefix="/api/posts", tags=["posts"])
 
-@router.get("/", response_model=list[PostRead], response_model_by_alias=True)
+@posts_router.get("/", response_model=list[PostRead], response_model_by_alias=True)
 def read_posts(session: Session = Depends(get_session)):
     return session.exec(select(Post).order_by(Post.created_at.desc())).all()
 
-@router.post("/", response_model=PostRead, status_code=status.HTTP_201_CREATED, response_model_by_alias=True)
+@posts_router.post("/", response_model=PostRead, status_code=status.HTTP_201_CREATED, response_model_by_alias=True)
 async def create_post(
         text_content: str = Form(""),
         attachments: list[UploadFile] | None = File(None),
@@ -38,7 +38,7 @@ async def create_post(
     session.refresh(post)
     return post
 
-@router.patch("/{post_id}", response_model=PostRead, response_model_by_alias=True)
+@posts_router.patch("/{post_id}", response_model=PostRead, response_model_by_alias=True)
 async def update_post(
         post_id: int,
         text_content: str | None = Form(None),
@@ -72,7 +72,7 @@ async def update_post(
     session.refresh(post)
     return post
 
-@router.delete("/{post_id}", status_code=status.HTTP_204_NO_CONTENT, response_model_by_alias=True)
+@posts_router.delete("/{post_id}", status_code=status.HTTP_204_NO_CONTENT, response_model_by_alias=True)
 def delete_post(post_id: int, session: Session = Depends(get_session)):
     post = session.get(Post, post_id)
     if not post:
