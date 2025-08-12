@@ -12,5 +12,11 @@ function formatLikes(likes: string[]): string {
   return count.toString();
 }
 
+function getCookie(name: string | undefined) {
+  return document.cookie
+    .split("; ")
+    .find(row => row.startsWith(name + "="))
+    ?.split("=")[1];
+}
 
-export { scrollToTop, formatLikes };
+export { scrollToTop, formatLikes, getCookie };
