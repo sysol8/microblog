@@ -15,7 +15,7 @@ export const useModalStore = create<ModalState>((set) => ({
   close: () => set({ isOpen: false, content: null }),
 }));
 
-export const modal = {
+export const modalStore = {
   open: (node: ReactNode) => useModalStore.getState().open(node),
   close: () => useModalStore.getState().close(),
 }
