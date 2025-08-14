@@ -1,5 +1,7 @@
 import styles from "./Post.module.css";
+// @ts-expect-error / temporarily unused icon
 import CancelIcon from "../../assets/icons/cancel.svg?react";
+// @ts-expect-error / temporarily unused icon
 import SaveIcon from "../../assets/icons/save.svg?react";
 import LikeIcon from "../../assets/icons/like.svg?react";
 import EditIcon from "../../assets/icons/edit.svg?react";
@@ -8,8 +10,10 @@ import RepostIcon from "../../assets/icons/repost.svg?react";
 import ViewsIcon from "../../assets/icons/views.svg?react";
 import type { IPost } from "../../utils/types.ts";
 import { formatPostDate } from "../../vendor/dayjs.ts";
+import { formatLikes } from "../../utils/utils.ts";
 import ImageModal from "../Modal/ImageModal/ImageModal.tsx";
-import { modal } from "../../store/modal.ts";
+import { modalStore } from "../../store/modalStore.ts";
+import { Link } from "react-router";
 
 export interface PostData {
   data: IPost;
@@ -22,41 +26,43 @@ export interface PostActions {
 type PostProps = PostData & PostActions;
 
 function Post({ data, onDelete }: PostProps) {
-  const { id, textContent, imageUrls, createdAt } = data;
+  const { id, textContent, imageUrls, createdAt, author, likes } = data;
 
   const openImageViewer = (startIndex: number) => {
-    modal.open(<ImageModal urls={imageUrls} start={startIndex} />);
+    modalStore.open(<ImageModal urls={imageUrls} start={startIndex} />);
   };
 
   return (
     <article key={id} className={styles.post}>
       <header className={styles.header}>
-        <a className={styles.author} href="#">
+        <Link className={styles.author} to={`/users/${author.username}`}>
           <img
             className={styles.avatar}
-            src="https://avatars.mds.yandex.net/i?id=f78644096fc4284c375b1bba35ec71d7_l-5878100-images-thumbs&n=13"
-            alt={`Аватар пользователя`}
+            src={
+              author.avatarUrl ? author.avatarUrl : "/avatar-placeholder.png"
+            }
+            alt={`Аватар пользователя ${author.username}`}
           ></img>
-          <span className={styles.name}>Автор</span>
-        </a>
+          <span className={styles.name}>{author.username}</span>
+        </Link>
         <time className={styles.time} dateTime={createdAt}>
           {formatPostDate(createdAt)}
         </time>
       </header>
       <>
         {textContent && <p className={styles.content}>{textContent}</p>}
-        {(imageUrls && imageUrls.length > 0) && (
+        {imageUrls && imageUrls.length > 0 && (
           <div className={styles.attachments}>
             {imageUrls.map((url, index) => (
-                <img
-                  key={url}
-                  src={url}
-                  alt="Прикрепленное изображение"
-                  loading="lazy"
-                  className={styles.attachedImage}
-                  onClick={() => openImageViewer(index)}
-                />
-              ))}
+              <img
+                key={url}
+                src={url}
+                alt="Прикрепленное изображение"
+                loading="lazy"
+                className={styles.attachedImage}
+                onClick={() => openImageViewer(index)}
+              />
+            ))}
           </div>
         )}
       </>
@@ -67,7 +73,7 @@ function Post({ data, onDelete }: PostProps) {
             aria-label="Нравится"
           >
             <LikeIcon className={styles.icon}></LikeIcon>
-            <span className={styles.likesCounter}>0</span>
+            <span className={styles.likesCounter}>{formatLikes(likes)}</span>
           </button>
           <button className={styles.button} aria-label="Поделиться">
             <RepostIcon className={styles.icon}></RepostIcon>
