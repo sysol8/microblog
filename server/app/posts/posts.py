@@ -2,9 +2,10 @@ import asyncio
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Form
 from sqlmodel import select, Session
 from ..db.database import get_session
-from ..models import Post
+from ..models import Post, User
 from .schemas import PostRead
 from ..aws import upload_to_s3
+from ..users.users import get_current_user
 
 posts_router = APIRouter(prefix="/api/posts", tags=["posts"])
 
@@ -17,6 +18,7 @@ async def create_post(
         text_content: str = Form(""),
         attachments: list[UploadFile] | None = File(None),
         session: Session = Depends(get_session),
+        current_user: User = Depends(get_current_user),
 ):
     if not text_content.strip() and not attachments:
         raise HTTPException(status_code=422, detail="Post must contain text or files.")
@@ -32,7 +34,7 @@ async def create_post(
         except Exception as e:
             raise HTTPException(status_code=502, detail=f"S3 upload failed: {e!s}")
 
-    post = Post(text_content=text_content, image_urls=image_urls)
+    post = Post(text_content=text_content, image_urls=image_urls, created_by=current_user.id, author=current_user)
     session.add(post)
     session.commit()
     session.refresh(post)
@@ -40,10 +42,11 @@ async def create_post(
 
 @posts_router.patch("/{post_id}", response_model=PostRead, response_model_by_alias=True)
 async def update_post(
-        post_id: int,
+        post_id: str,
         text_content: str | None = Form(None),
         attachments: list[UploadFile] | None = File(None),
         session: Session = Depends(get_session),
+        current_user: User = Depends(get_current_user)
 ):
     post = session.get(Post, post_id)
     if not post:
@@ -73,7 +76,7 @@ async def update_post(
     return post
 
 @posts_router.delete("/{post_id}", status_code=status.HTTP_204_NO_CONTENT, response_model_by_alias=True)
-def delete_post(post_id: int, session: Session = Depends(get_session)):
+def delete_post(post_id: str, session: Session = Depends(get_session)):
     post = session.get(Post, post_id)
     if not post:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Post not found")
