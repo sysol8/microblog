@@ -1,7 +1,7 @@
+import styles from "./PostForm.module.css";
 import SendIcon from "../../assets/icons/send.svg?react";
 import ClearIcon from "../../assets/icons/cancel.svg?react";
 import AttachIcon from "../../assets/icons/attach.svg?react";
-import styles from "./PostForm.module.css";
 import { type FormEvent, type ChangeEvent, useState, useRef } from "react";
 import type { ICreatePost } from "../../utils/types.ts";
 import ImagePreview from "../ImagePreview/ImagePreview.tsx";
@@ -15,13 +15,15 @@ export const MAX_ATTACHMENTS = 5;
 
 export default function PostForm({ onPostAdd }: PostFormProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const [content, setContent] = useState<ICreatePost>({
     textContent: "",
     attachments: [],
   });
 
-  const fileKey = (f: File) => `${f.name}_${f.size}_${f.lastModified}`;
+  const fileKey = (file: File) =>
+    `${file.name}_${file.size}_${file.lastModified}`;
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newFiles = Array.from(e.target.files ?? []);
@@ -30,17 +32,17 @@ export default function PostForm({ onPostAdd }: PostFormProps) {
     setContent((prev) => {
       const all = [...prev.attachments, ...newFiles];
       const map = new Map<string, File>();
-      for (const f of all) map.set(fileKey(f), f);
+      for (const file of all) map.set(fileKey(file), file);
       return { ...prev, attachments: Array.from(map.values()) };
     });
 
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  const handleFileRemove = (idx: number) => {
+  const handleFileRemove = (index: number) => {
     setContent((prev) => ({
       ...prev,
-      attachments: prev.attachments.filter((_, i) => i !== idx),
+      attachments: prev.attachments.filter((_, i) => i !== index),
     }));
   };
 
@@ -60,8 +62,8 @@ export default function PostForm({ onPostAdd }: PostFormProps) {
     if (!isFormValid()) return;
 
     await onPostAdd(content);
-    setContent({ textContent: "", attachments: [] });
-    if (fileInputRef.current) fileInputRef.current.value = "";
+    formRef.current?.reset();
+    // if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   return (
