@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from uuid import uuid4
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, Response, Request, status
 from jose import jwt, JWTError
@@ -29,7 +29,7 @@ def _normalize_username(u: str) -> str:
 
 
 def _issue_tokens(user_id: str, username: str) -> tuple[str, str, datetime]:
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     exp = now + timedelta(minutes=JWT_EXPIRE_MIN)
     csrf = uuid4().hex
     claims = {
@@ -57,24 +57,59 @@ def _set_auth_cookies(resp: Response, token: str, csrf: str, exp: datetime) -> N
     resp.set_cookie(
         key=AUTH_COOKIE_NAME,
         value=token,
-        **cookie_kwargs,
+        httponly=True,
+        secure=False,
+        samesite="lax",
+        expires=exp,
+        path="/",
     )
     resp.set_cookie(
         key=CSRF_COOKIE_NAME,
         value=csrf,
         httponly=False,
-        secure=SECURE_COOKIES,
-        samesite=AUTH_SAMESITE,
+        secure=False,
+        samesite="lax",
         expires=exp,
         path="/",
-        domain=AUTH_COOKIE_DOMAIN if AUTH_COOKIE_DOMAIN else None,
     )
+
 
 
 def _clear_auth_cookies(resp: Response) -> None:
     resp.delete_cookie(AUTH_COOKIE_NAME, path="/", domain=AUTH_COOKIE_DOMAIN if AUTH_COOKIE_DOMAIN else None)
     resp.delete_cookie(CSRF_COOKIE_NAME, path="/", domain=AUTH_COOKIE_DOMAIN if AUTH_COOKIE_DOMAIN else None)
 
+def get_current_user(
+        request: Request,
+        session: Session = Depends(get_session),
+) -> User:
+    token = request.cookies.get(AUTH_COOKIE_NAME)
+    if not token:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated")
+
+    try:
+        claims = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALG])
+        user_id: str = claims["sub"]
+    except JWTError:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
+
+    user = session.get(User, user_id)
+    if not user:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
+    return user
+
+@users_router.get("/users/me", response_model=UserRead, response_model_by_alias=True)
+def get_me(current: User = Depends(get_current_user)) -> UserRead:
+    return UserRead(
+        id=current.id,
+        name=current.name,
+        username=current.username,
+        avatar_url=current.avatar_url,
+        posts=[p.id for p in (current.posts or []) if p and p.id],
+        liked=current.liked,
+        likes=current.likes,
+        created_at=current.created_at,
+    )
 
 @users_router.post("/register", status_code=status.HTTP_201_CREATED)
 def register(payload: UserCreate, session: Session = Depends(get_session)) -> Response:
@@ -97,7 +132,7 @@ def register(payload: UserCreate, session: Session = Depends(get_session)) -> Re
     return Response(status_code=status.HTTP_201_CREATED)
 
 
-@users_router.post("/login", status_code=status.HTTP_204_NO_CONTENT)
+@users_router.post("/login", status_code=status.HTTP_200_OK)
 def login(payload: LoginRequest, response: Response, session: Session = Depends(get_session)) -> Response:
     uname = _normalize_username(payload.username)
 
@@ -114,7 +149,9 @@ def login(payload: LoginRequest, response: Response, session: Session = Depends(
     token, csrf, exp = _issue_tokens(user.id, user.username)
     _set_auth_cookies(response, token, csrf, exp)
 
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
+    response.status_code = status.HTTP_200_OK
+
+    return response
 
 
 @users_router.post("/logout", status_code=status.HTTP_204_NO_CONTENT)
