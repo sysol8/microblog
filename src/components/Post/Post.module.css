@@ -64,21 +64,15 @@
   gap: 0.4rem;
 }
 
-.button {
-  color: var(--text-color);
-}
-
 .icon {
   block-size: 2.4rem;
   inline-size: 2.4rem;
 }
 
-/* TODO: поправить отображение кнопки лайка */
-
 .form {
   display: flex;
   position: relative;
-  border: 1px solid var(--text-color);
+  border: 1px solid var(--text-50);
   border-radius: calc(var(--bd-radius) / 2);
   min-block-size: 6.4rem;
 }
@@ -88,15 +82,15 @@
   padding-inline-end: 6.4rem;
   block-size: 100%;
   inline-size: 100%;
+}
 
-  .input {
-    color: inherit;
-    font: inherit;
-    inline-size: 100%;
-    min-block-size: 4rem;
-    block-size: 100%;
-    resize: none;
-  }
+.input {
+  color: inherit;
+  font: inherit;
+  inline-size: 100%;
+  min-block-size: 4rem;
+  block-size: 100%;
+  resize: none;
 }
 
 .buttons {
@@ -108,17 +102,9 @@
   justify-content: space-between;
   block-size: 100%;
   padding-inline-end: 0.4rem;
-
-  .button {
-    display: inline-block;
-    block-size: 2.4rem;
-    inline-size: 2.4rem;
-
-    .icon {
-      block-size: 100%;
-      inline-size: 100%;
-    }
-  }
+}
+.button {
+  display: inline-block;
 }
 
 .likeButton {
