@@ -4,12 +4,20 @@ import { ensureOk, BASE_URL, parseJson } from "./base.ts";
 async function getUser(id: string): Promise<IUser> {
   const response = await fetch(`${BASE_URL}/api/users/${id}`, {
     method: "GET",
-    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
   });
   return parseJson<IUser>(response);
+}
+
+async function getMe(): Promise<IUser | null> {
+  const res = await fetch(`${BASE_URL}/api/users/me`, {
+    method: "GET",
+    credentials: "include",
+  });
+  if (res.status === 401) return null;
+  return parseJson<IUser>(res);
 }
 
 export type AuthPayload = {
@@ -52,4 +60,4 @@ async function logout(): Promise<void> {
   await ensureOk(res);
 }
 
-export { getUser, register, login, logout }
+export { getUser, register, login, logout, getMe }
