@@ -8,10 +8,10 @@ class UserCreate(BaseModel):
     password: str
 
     @model_validator(mode="after")
-    def set_default_name(cls, values):
-        if not values.name:
-            values.name = values.username
-        return values
+    def set_default_name(self):
+        if not self.name:
+            self.name = self.username
+        return self
 
 class UserRead(BaseModel):
     model_config = ConfigDict(from_attributes=True, populate_by_name=True)
