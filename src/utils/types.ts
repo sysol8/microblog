@@ -14,17 +14,17 @@ export type IPostContent = Pick<IPost, "textContent" | "imageUrls">
 
 export interface IPost {
   id: string;
-  author?: IPostAuthor;
+  author: IPostAuthor;
   textContent: string;
   imageUrls: string[];
   createdAt: string;
   isLiked?: boolean;
-  likes?: number;
+  likes: string[];
 }
 
 interface IPostAuthor {
   id: string;
-  name: string;
+  username: string;
   avatarUrl: string;
 }
 
@@ -37,4 +37,10 @@ export interface IUser {
   posts: string[];
   liked: string[];
   likes: number
+}
+
+export interface IAlert {
+  id: string;
+  type: 'success' | 'warning' | 'error' | 'info'
+  message: string
 }
