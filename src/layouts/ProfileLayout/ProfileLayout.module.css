@@ -1,0 +1,28 @@
+.content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--text-50);
+}
+
+.wrapper {
+  max-inline-size: var(--layout-inline-size);
+  inline-size: 100%;
+  padding-block: 2.4rem;
+}
+
+.user {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.avatar {
+  inline-size: 6.4rem;
+  block-size: 6.4rem;
+}
+
+.username {
+  font-size: 2.4rem;
+}
