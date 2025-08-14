@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, type ReactNode } from 'react';
+import { useState, useEffect, useMemo, type ReactNode } from "react";
 
 interface ImagePreviewProps {
   file: File;
@@ -9,7 +9,14 @@ interface ImagePreviewProps {
   children?: ReactNode;
 }
 
-function ImagePreview({ file, containerClassName, imageClassName, fallbackClassName, alt = "", children }: ImagePreviewProps) {
+function ImagePreview({
+  file,
+  containerClassName,
+  imageClassName,
+  fallbackClassName,
+  alt = "",
+  children,
+}: ImagePreviewProps) {
   const isImage = useMemo(() => /^image\//.test(file.type), [file.type]);
   const [url, setUrl] = useState<string | null>(null);
 
@@ -34,7 +41,7 @@ function ImagePreview({ file, containerClassName, imageClassName, fallbackClassN
       <img src={url} alt={alt || file.name} className={imageClassName} />
       {children}
     </div>
-  )
+  );
 }
 
 export default ImagePreview;
