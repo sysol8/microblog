@@ -5,6 +5,8 @@ from .middleware import setup_cors
 from .posts.posts import posts_router
 from .users.users import users_router
 
+from . import models
+
 app = FastAPI(title="Microblog API", version="0.1.0")
 
 setup_cors(app)
