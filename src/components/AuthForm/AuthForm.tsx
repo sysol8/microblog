@@ -1,13 +1,15 @@
 import styles from "./AuthForm.module.css";
-import { useState, type FormEvent, type ChangeEvent } from "react";
-import useUsers from "../../hooks/useUsers.ts";
+import { useState, type FormEvent, type ChangeEvent, useRef } from "react";
+import { useAuthStore } from "../../store/authStore.ts";
 import type { AuthPayload } from "../../api/users.ts";
 
 type AuthMode = "login" | "register";
 
+// TODO: сделать инпуты неконтролируемыми
+
 function AuthForm() {
   const [mode, setMode] = useState<AuthMode>("login");
-  const { register, login } = useUsers();
+  const { register, login } = useAuthStore();
 
   return (
     <div className={styles.container}>
@@ -25,17 +27,23 @@ function AuthForm() {
           Регистрация
         </button>
       </div>
-      {mode === "login" ? <LoginForm onSubmit={login} /> : <RegisterForm onSubmit={register}/>}
+      {mode === "login" ? (
+        <LoginForm onSubmit={login} />
+      ) : (
+        <RegisterForm onSubmit={register} />
+      )}
     </div>
   );
 }
 
 type FormActions = {
   onSubmit: (payload: AuthPayload) => Promise<void>;
-}
+};
 
 function LoginForm({ onSubmit }: FormActions) {
   const [form, setForm] = useState({ username: "", password: "" });
+
+  const formRef = useRef<HTMLFormElement>(null);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -45,10 +53,15 @@ function LoginForm({ onSubmit }: FormActions) {
     e.preventDefault();
     if (!form.username.trim() || !form.password) return;
     await onSubmit({ username: form.username, password: form.password });
+    formRef.current?.reset();
   };
 
   return (
-    <form onSubmit={handleFormSubmit} className={styles.form}>
+    <form
+      onSubmit={handleFormSubmit}
+      className={styles.form}
+      autoComplete="off"
+    >
       <label className={styles.label} htmlFor="username">
         Имя пользователя
         <input
@@ -88,6 +101,8 @@ function LoginForm({ onSubmit }: FormActions) {
 function RegisterForm({ onSubmit }: FormActions) {
   const [form, setForm] = useState({ username: "", password: "" });
 
+  const formRef = useRef<HTMLFormElement>(null);
+
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -96,10 +111,15 @@ function RegisterForm({ onSubmit }: FormActions) {
     e.preventDefault();
     if (!form.username.trim() || !form.password) return;
     await onSubmit({ username: form.username, password: form.password });
+    formRef.current?.reset();
   };
 
   return (
-    <form onSubmit={handleFormSubmit} className={styles.form}>
+    <form
+      onSubmit={handleFormSubmit}
+      className={styles.form}
+      autoComplete="off"
+    >
       <label className={styles.label} htmlFor="username">
         Имя пользователя
         <input
