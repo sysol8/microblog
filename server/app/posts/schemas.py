@@ -20,5 +20,5 @@ class PostRead(BaseModel):
     text_content: str = Field(alias="textContent")
     image_urls: List[str] = Field(alias="imageUrls")
     created_at: datetime = Field(alias="createdAt")
-    created_by: PostAuthor
+    author: PostAuthor
     likes: List[str] = []
