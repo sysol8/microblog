@@ -1,24 +1,8 @@
 import {type ICreatePost, type IPost, type IPostContent} from "../utils/types.ts";
-
-const config = {
-  baseURL: "http://localhost:8000",
-  headers: {
-    "Content-Type": "application/json",
-  },
-};
-
-async function parseJson<T>(response: Response): Promise<T> {
-  if (!response.ok) {
-    throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
-  }
-  const data = await response.json();
-  return data as T;
-}
+import { BASE_URL, parseJson, ensureOk } from "./base.ts";
 
 export async function getPosts(): Promise<IPost[]> {
-  const response = await fetch(`${config.baseURL}/api/posts`, {
-    method: "GET",
-    headers: config.headers,
+  const response = await fetch(`${BASE_URL}/api/posts`, {
     mode: "cors",
   });
 
@@ -26,9 +10,7 @@ export async function getPosts(): Promise<IPost[]> {
 }
 
 export async function getPost(postId: number): Promise<IPost> {
-  const response = await fetch(`${config.baseURL}/api/posts/${postId}`, {
-    method: "GET",
-    headers: config.headers,
+  const response = await fetch(`${BASE_URL}/api/posts/${postId}`, {
     mode: "cors",
   });
 
@@ -41,10 +23,11 @@ export async function createPost(content: ICreatePost): Promise<IPost> {
   for (const file of content.attachments ?? []) {
     formData.append("attachments", file);
   }
-  const response = await fetch(`${config.baseURL}/api/posts`, {
+  const response = await fetch(`${BASE_URL}/api/posts`, {
     method: "POST",
     mode: "cors",
     body: formData,
+    credentials: 'include',
     headers: {
       'x-amz-content-sha256': ''
     }
@@ -63,22 +46,21 @@ export async function editPost(
   for (const file of content.imageUrls ?? []) {
     formData.append("attachments", file);
   }
-  const response = await fetch(`${config.baseURL}/api/posts/${postId}`, {
+  const response = await fetch(`${BASE_URL}/api/posts/${postId}`, {
     method: "PATCH",
     mode: "cors",
     body: formData,
+    credentials: 'include',
   });
   return parseJson<IPost>(response);
 }
 
 export async function deletePost(id: string): Promise<void> {
-  const response = await fetch(`${config.baseURL}/api/posts/${id}`, {
+  const response = await fetch(`${BASE_URL}/api/posts/${id}`, {
     method: "DELETE",
-    headers: config.headers,
     mode: "cors",
+    credentials: 'include',
   });
 
-  if (!response.ok) {
-    throw new Error(`Ошибка ${response.status}: ${response.statusText}}`);
-  }
+  await ensureOk(response);
 }
