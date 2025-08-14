@@ -1,7 +1,7 @@
 import styles from "./Modal.module.css";
 import { useCallback, useEffect, useRef, type MouseEvent } from "react";
 import { createPortal } from "react-dom";
-import { useModalStore } from "../../store/modal";
+import { useModalStore } from "../../store/modalStore.ts";
 import CancelIcon from "../../assets/icons/cancel.svg?react";
 
 function Modal() {
