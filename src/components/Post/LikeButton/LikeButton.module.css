@@ -1,0 +1,18 @@
+.button {
+  display: flex;
+  gap: 1rem;
+  background-color: var(--primary-900);
+  padding-block: 0.4rem;
+  padding-inline: 0.6rem 0.8rem;
+  align-items: center;
+  border-radius: calc(var(--bd-radius) / 2);
+
+  &.active .icon {
+    fill: currentColor;
+  }
+}
+
+.icon {
+  inline-size: 2.4rem;
+  block-size: 2.4rem;
+}
