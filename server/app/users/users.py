@@ -9,7 +9,7 @@ from sqlalchemy import func
 from sqlmodel import Session, select
 
 from ..db.database import get_session
-from ..models import User
+from ..models import User, Post
 from .schemas import UserCreate, UserRead, LoginRequest
 from ..security import hash_password, verify_password, needs_rehash
 from server.config import (
@@ -76,8 +76,37 @@ def _set_auth_cookies(resp: Response, token: str, csrf: str, exp: datetime) -> N
 
 
 def _clear_auth_cookies(resp: Response) -> None:
-    resp.delete_cookie(AUTH_COOKIE_NAME, path="/", domain=AUTH_COOKIE_DOMAIN if AUTH_COOKIE_DOMAIN else None)
-    resp.delete_cookie(CSRF_COOKIE_NAME, path="/", domain=AUTH_COOKIE_DOMAIN if AUTH_COOKIE_DOMAIN else None)
+    SECURE = False
+    SAMESITE = "lax"
+    PATH = "/"
+
+    dom = AUTH_COOKIE_DOMAIN if (AUTH_COOKIE_DOMAIN and AUTH_COOKIE_DOMAIN.strip()) else None
+
+    domains = [None]
+    if dom:
+        domains.append(dom)
+
+    for d in domains:
+        for key, http_only in (
+                (AUTH_COOKIE_NAME, True),
+                (CSRF_COOKIE_NAME, False),
+        ):
+            resp.delete_cookie(
+                key=key,
+                path=PATH,
+                domain=d,
+            )
+            resp.set_cookie(
+                key=key,
+                value="",
+                path=PATH,
+                domain=d,
+                httponly=http_only,
+                secure=SECURE,
+                samesite=SAMESITE,
+                max_age=0,
+                expires=0,
+            )
 
 def get_current_user(
         request: Request,
@@ -98,8 +127,12 @@ def get_current_user(
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
     return user
 
+def _likes_received(session: Session, user_id: str) -> int:
+    rows = session.exec(select(Post.likes).where(Post.created_by == user_id)).all()
+    return sum(len(l or []) for l in rows)
+
 @users_router.get("/users/me", response_model=UserRead, response_model_by_alias=True)
-def get_me(current: User = Depends(get_current_user)) -> UserRead:
+def get_me(current: User = Depends(get_current_user), session: Session = Depends(get_session)) -> UserRead:
     return UserRead(
         id=current.id,
         name=current.name,
@@ -107,7 +140,7 @@ def get_me(current: User = Depends(get_current_user)) -> UserRead:
         avatar_url=current.avatar_url,
         posts=[p.id for p in (current.posts or []) if p and p.id],
         liked=current.liked,
-        likes=current.likes,
+        likes=_likes_received(session, current.id),
         created_at=current.created_at,
     )
 
@@ -146,6 +179,8 @@ def login(payload: LoginRequest, response: Response, session: Session = Depends(
         session.add(user)
         session.commit()
 
+    _clear_auth_cookies(response)
+
     token, csrf, exp = _issue_tokens(user.id, user.username)
     _set_auth_cookies(response, token, csrf, exp)
 
@@ -157,7 +192,8 @@ def login(payload: LoginRequest, response: Response, session: Session = Depends(
 @users_router.post("/logout", status_code=status.HTTP_204_NO_CONTENT)
 def logout(response: Response) -> Response:
     _clear_auth_cookies(response)
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
+    response.status_code=status.HTTP_200_OK
+    return response
 
 
 @users_router.get("/users/{user_id}", response_model=UserRead, response_model_by_alias=True)
