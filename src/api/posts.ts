@@ -55,6 +55,16 @@ export async function editPost(
   return parseJson<IPost>(response);
 }
 
+export async function toggleLike(id: string): Promise<void> {
+  const response = await fetch(`${BASE_URL}/api/posts/${id}/like`, {
+    method: "PATCH",
+    mode: "cors",
+    credentials: 'include'
+  })
+
+  await ensureOk(response);
+}
+
 export async function deletePost(id: string): Promise<void> {
   const response = await fetch(`${BASE_URL}/api/posts/${id}`, {
     method: "DELETE",
