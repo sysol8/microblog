@@ -3,6 +3,7 @@ import {
   createPost as apiCreatePost,
   deletePost as apiDeletePost,
   getPosts as apiGetPosts,
+  toggleLike as apiToggleLike,
 } from "../api/posts.ts";
 import type { IPost, ICreatePost } from "../utils/types.ts";
 
@@ -15,6 +16,7 @@ interface UsePostsData {
 interface UsePostsActions {
   addPost: (content: ICreatePost) => Promise<void>;
   deletePost: (id: string) => Promise<void>;
+  toggleLike: (id: string) => Promise<void>;
 }
 
 type TUsePosts = UsePostsData & UsePostsActions;
@@ -43,6 +45,14 @@ function usePosts(): TUsePosts {
     }
   };
 
+  const toggleLike = async (id: string) => {
+    try {
+      await apiToggleLike(id);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   useEffect(() => {
     let isMounted: boolean = true;
     setError(null);
@@ -63,7 +73,7 @@ function usePosts(): TUsePosts {
       isMounted = false;
     };
   }, []);
-  return { posts, loading, error, addPost, deletePost };
+  return { posts, loading, error, addPost, deletePost, toggleLike };
 }
 
 export default usePosts;
