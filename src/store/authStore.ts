@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import * as api from "../api/users";
 import type { IUser } from "../utils/types";
-import type { AuthPayload } from "../api/users";
+import type { AuthPayload } from '../utils/types.ts';
 
 type AuthState = {
   user: IUser | null | undefined;
