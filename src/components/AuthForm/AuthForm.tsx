@@ -1,14 +1,15 @@
 import styles from "./AuthForm.module.css";
-import { useState, type FormEvent, type ChangeEvent, useRef } from "react";
+import type { AuthPayload, AuthAction } from "../../utils/types.ts";
+import { useState } from "react";
 import { useAuthStore } from "../../store/authStore.ts";
-import type { AuthPayload } from "../../api/users.ts";
+import useAuthForm from "../../hooks/useAuthForm.ts";
 
-type AuthMode = "login" | "register";
-
-// TODO: сделать инпуты неконтролируемыми
+interface AuthFormActions {
+  onSubmit: (payload: AuthPayload) => Promise<void>;
+}
 
 function AuthForm() {
-  const [mode, setMode] = useState<AuthMode>("login");
+  const [mode, setMode] = useState<AuthAction>("login");
   const { register, login } = useAuthStore();
 
   return (
@@ -36,25 +37,9 @@ function AuthForm() {
   );
 }
 
-type FormActions = {
-  onSubmit: (payload: AuthPayload) => Promise<void>;
-};
-
-function LoginForm({ onSubmit }: FormActions) {
-  const [form, setForm] = useState({ username: "", password: "" });
-
-  const formRef = useRef<HTMLFormElement>(null);
-
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!form.username.trim() || !form.password) return;
-    await onSubmit({ username: form.username, password: form.password });
-    formRef.current?.reset();
-  };
+function LoginForm({ onSubmit }: AuthFormActions) {
+  const { form, submitting, error, handleInputChange, handleFormSubmit } =
+    useAuthForm({ onSubmit });
 
   return (
     <form
@@ -86,6 +71,7 @@ function LoginForm({ onSubmit }: FormActions) {
           onChange={handleInputChange}
         />
       </label>
+      {error && <span className={styles.error}>{error}</span>}
       <div className={styles.buttons}>
         <button className={`${styles.button} ${styles.action}`} type="submit">
           Войти
@@ -98,21 +84,9 @@ function LoginForm({ onSubmit }: FormActions) {
   );
 }
 
-function RegisterForm({ onSubmit }: FormActions) {
-  const [form, setForm] = useState({ username: "", password: "" });
-
-  const formRef = useRef<HTMLFormElement>(null);
-
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!form.username.trim() || !form.password) return;
-    await onSubmit({ username: form.username, password: form.password });
-    formRef.current?.reset();
-  };
+function RegisterForm({ onSubmit }: AuthFormActions) {
+  const { form, submitting, error, handleInputChange, handleFormSubmit } =
+    useAuthForm({ onSubmit });
 
   return (
     <form
@@ -144,6 +118,7 @@ function RegisterForm({ onSubmit }: FormActions) {
           onChange={handleInputChange}
         />
       </label>
+      {error && <span className={styles.error}>{error}</span>}
       <div className={styles.buttons}>
         <button className={`${styles.button} ${styles.action}`} type="submit">
           Зарегистрироваться
