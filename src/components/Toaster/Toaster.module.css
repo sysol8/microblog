@@ -1,0 +1,13 @@
+.toaster {
+  position: sticky;
+  max-inline-size: 32rem;
+  align-self: end;
+  max-block-size: 50dvb;
+  overflow-y: auto;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
