@@ -1,4 +1,4 @@
-import { type IUser } from "../utils/types.ts";
+import type { IUser, AuthPayload } from "../utils/types.ts";
 import { ensureOk, BASE_URL, parseJson } from "./base.ts";
 
 async function getUser(id: string): Promise<IUser> {
@@ -12,52 +12,47 @@ async function getUser(id: string): Promise<IUser> {
 }
 
 async function getMe(): Promise<IUser | null> {
-  const res = await fetch(`${BASE_URL}/api/users/me`, {
+  const response = await fetch(`${BASE_URL}/api/users/me`, {
     method: "GET",
     credentials: "include",
   });
-  if (res.status === 401) return null;
-  return parseJson<IUser>(res);
-}
-
-export type AuthPayload = {
-  username: string
-  password: string
+  if (response.status === 401) return null;
+  return parseJson<IUser>(response);
 }
 
 async function register(payload: AuthPayload): Promise<void> {
   const response = await fetch(`${BASE_URL}/api/register`, {
-    method: 'POST',
-    credentials: 'include',
-    mode: 'cors',
+    method: "POST",
+    credentials: "include",
+    mode: "cors",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(payload)
-  })
-  await ensureOk(response)
+    body: JSON.stringify(payload),
+  });
+  await ensureOk(response);
 }
 
 async function login(payload: AuthPayload): Promise<void> {
   const response = await fetch(`${BASE_URL}/api/login`, {
-    method: 'POST',
-    credentials: 'include',
-    mode: 'cors',
+    method: "POST",
+    credentials: "include",
+    mode: "cors",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(payload)
-  })
-  await ensureOk(response)
+    body: JSON.stringify(payload),
+  });
+  await ensureOk(response);
 }
 
 async function logout(): Promise<void> {
-  const res = await fetch(`${BASE_URL}/api/logout`, {
+  const response = await fetch(`${BASE_URL}/api/logout`, {
     method: "POST",
     credentials: "include",
     mode: "cors",
   });
-  await ensureOk(res);
+  await ensureOk(response);
 }
 
-export { getUser, register, login, logout, getMe }
+export { getUser, register, login, logout, getMe };
