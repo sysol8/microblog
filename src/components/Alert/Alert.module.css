@@ -1,12 +1,34 @@
 .alert {
   display: flex;
+  position: relative;
   align-items: center;
+  padding-block: 0.6rem;
+  padding-inline: 0.8rem;
   gap: 1.2rem;
-  max-inline-size: 24rem;
   inline-size: 100%;
   border: 2px solid transparent;
   border-radius: var(--bd-radius);
   font-size: 1.6rem;
+}
+
+.close {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.closeIcon {
+  inline-size: 2.4rem;
+  block-size: 2.4rem;
+}
+
+.faded {
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    opacity: 1;
+  }
 }
 
 .success {
