@@ -3,11 +3,14 @@ import SuccessIcon from '../../assets/icons/success.svg?react';
 import WarningIcon from '../../assets/icons/warning.svg?react';
 import ErrorIcon from '../../assets/icons/error.svg?react';
 import InfoIcon from '../../assets/icons/info.svg?react';
+import CancelIcon from '../../assets/icons/cancel.svg?react';
+import type { IAlert } from "../../utils/types.ts";
 
-interface AlertProps {
-  type: 'success' | 'warning' | 'error' | 'info'
-  message: string
+interface AlertActions {
+  onDelete: (id: string) => void;
 }
+
+type AlertProps = IAlert & AlertActions;
 
 const ALERT_TYPE_CONFIG = {
   success: {
@@ -32,10 +35,13 @@ const ALERT_TYPE_CONFIG = {
   }
 } as const;
 
-export default function Alert({ type, message }: AlertProps) {
+export default function Alert({ id, type, message, onDelete, faded }: AlertProps) {
   const { Icon, className, header } = ALERT_TYPE_CONFIG[type];
   return (
-    <div className={`${styles.alert} ${className}`}>
+    <div className={`${styles.alert} ${className} ${faded ? styles.faded : ''}`}>
+      <button className={styles.close} type="button" onClick={() => onDelete(id)}>
+        <CancelIcon className={styles.closeIcon} />
+      </button>
       <Icon className={styles.icon}></Icon>
       <div className={styles.text}>
         <h4>{header}</h4>
