@@ -10,12 +10,11 @@ interface PostFormProps {
   onPostAdd: (content: ICreatePost) => Promise<void>;
 }
 
-export const maxLen = 500;
+export const MAX_LEN = 500;
 export const MAX_ATTACHMENTS = 5;
 
 export default function PostForm({ onPostAdd }: PostFormProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const formRef = useRef<HTMLFormElement>(null);
 
   const [content, setContent] = useState<ICreatePost>({
     textContent: "",
@@ -46,6 +45,10 @@ export default function PostForm({ onPostAdd }: PostFormProps) {
     }));
   };
 
+  const limitFiles = ()=> {
+    return content.attachments.length >= MAX_ATTACHMENTS;
+  }
+
   const handleTextContentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setContent((prev) => ({ ...prev, textContent: e.target.value }));
   };
@@ -62,8 +65,8 @@ export default function PostForm({ onPostAdd }: PostFormProps) {
     if (!isFormValid()) return;
 
     await onPostAdd(content);
-    formRef.current?.reset();
-    // if (fileInputRef.current) fileInputRef.current.value = "";
+    setContent({ textContent: "", attachments: [] });
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   return (
@@ -76,10 +79,10 @@ export default function PostForm({ onPostAdd }: PostFormProps) {
           placeholder="Расскажите, о чем вы думаете..."
           value={content.textContent}
           onChange={handleTextContentChange}
-          maxLength={maxLen}
+          maxLength={MAX_LEN}
         />
         <span className={styles.counter}>
-          {content.textContent.length}/{maxLen}
+          {content.textContent.length}/{MAX_LEN}
         </span>
         {content.textContent && (
           <button
@@ -129,6 +132,7 @@ export default function PostForm({ onPostAdd }: PostFormProps) {
               multiple
               accept="image/png, image/jpeg, image/webp, image/gif"
               onChange={handleFileChange}
+              disabled={limitFiles()}
             />
           </label>
         </div>
