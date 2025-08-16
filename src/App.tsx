@@ -26,7 +26,7 @@ function App() {
             <Route index element={<PostsLayout />} />
             <Route path="login" element={<AuthLayout />} />
             <Route element={<ProtectedRoute />}>
-              <Route path="users/me" element={<ProfileLayout data={user as IUser}/>} />
+              <Route path="users/me" element={<ProfileLayout data={user as IUser} isMe={true}/>} />
             </Route>
           </Route>
         </Routes>
