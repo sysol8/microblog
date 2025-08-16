@@ -3,17 +3,15 @@ import styles from "./Post.module.css";
 import CancelIcon from "../../assets/icons/cancel.svg?react";
 // @ts-expect-error / temporarily unused icon
 import SaveIcon from "../../assets/icons/save.svg?react";
-import LikeIcon from "../../assets/icons/like.svg?react";
 import EditIcon from "../../assets/icons/edit.svg?react";
 import DeleteIcon from "../../assets/icons/delete.svg?react";
-import RepostIcon from "../../assets/icons/repost.svg?react";
-import ViewsIcon from "../../assets/icons/views.svg?react";
 import type { IPost } from "../../utils/types.ts";
 import { formatPostDate } from "../../vendor/dayjs.ts";
-import { formatLikes } from "../../utils/utils.ts";
 import ImageModal from "../Modal/ImageModal/ImageModal.tsx";
 import { modalStore } from "../../store/modalStore.ts";
 import { Link } from "react-router";
+import LikeButton from "./LikeButton/LikeButton.tsx";
+import { useProtectedAction } from "../../hooks/useProtectedAction.ts";
 
 export interface PostData {
   data: IPost;
@@ -27,6 +25,8 @@ type PostProps = PostData & PostActions;
 
 function Post({ data, onDelete }: PostProps) {
   const { id, textContent, imageUrls, createdAt, author, likes } = data;
+  const isAllowed = useProtectedAction();
+  const isAllowedToChange = isAllowed.post.edit(author.id) && isAllowed.post.delete(author.id);
 
   const openImageViewer = (startIndex: number) => {
     modalStore.open(<ImageModal urls={imageUrls} start={startIndex} />);
@@ -68,39 +68,26 @@ function Post({ data, onDelete }: PostProps) {
       </>
       <footer className={styles.footer}>
         <div className={`${styles.footerLeft} ${styles.footerSection}`}>
-          <button
-            className={`${styles.button} ${styles.likeButton}`}
-            aria-label="Нравится"
-          >
-            <LikeIcon className={styles.icon}></LikeIcon>
-            <span className={styles.likesCounter}>{formatLikes(likes)}</span>
-          </button>
-          <button className={styles.button} aria-label="Поделиться">
-            <RepostIcon className={styles.icon}></RepostIcon>
-          </button>
+          <LikeButton id={id} likes={likes}/>
         </div>
-        <div className={`${styles.footerRight} ${styles.footerSection}`}>
-          <button
-            type="button"
-            className={styles.button}
-            aria-label="Редактировать"
-          >
-            <EditIcon className={styles.icon}></EditIcon>
-          </button>
-          <button
-            className={styles.button}
-            onClick={() => onDelete(id)}
-            aria-label="Удалить"
-          >
-            <DeleteIcon className={styles.icon}></DeleteIcon>
-          </button>
-          <div className={styles.views} aria-label="Просмотры">
-            <ViewsIcon className={styles.icon} aria-label="Иконка"></ViewsIcon>
-            <span className={styles.count} aria-label="Количество">
-              123
-            </span>
+        {isAllowedToChange && (
+          <div className={`${styles.footerRight} ${styles.footerSection}`}>
+            <button
+              type="button"
+              className={styles.button}
+              aria-label="Редактировать"
+            >
+              <EditIcon className={styles.icon}></EditIcon>
+            </button>
+            <button
+              className={styles.button}
+              onClick={() => onDelete(id)}
+              aria-label="Удалить"
+            >
+              <DeleteIcon className={styles.icon}></DeleteIcon>
+            </button>
           </div>
-        </div>
+        )}
       </footer>
     </article>
   );
