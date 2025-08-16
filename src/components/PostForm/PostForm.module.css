@@ -92,6 +92,10 @@
   gap: 0.8rem;
   font-size: 1.4rem;
   cursor: pointer;
+
+  &:has(input[type="file"]:disabled) {
+    cursor: initial;
+  }
 }
 
 .counter {
