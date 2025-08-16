@@ -75,11 +75,42 @@ async def update_post(
     session.refresh(post)
     return post
 
-@posts_router.delete("/{post_id}", status_code=status.HTTP_204_NO_CONTENT, response_model_by_alias=True)
-def delete_post(post_id: str, session: Session = Depends(get_session)):
+@posts_router.patch("/{post_id}/like", status_code=status.HTTP_200_OK, response_model_by_alias=True)
+def toggle_like(
+        post_id: str,
+        session: Session = Depends(get_session),
+        current_user: User = Depends(get_current_user),
+):
     post = session.get(Post, post_id)
     if not post:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Post not found")
+
+    post_likes: list[str] = list(post.likes or [])
+    user_liked: list[str] = list(current_user.liked or [])
+    uid = current_user.id
+
+    if uid in post_likes:
+        post_likes = [x for x in post_likes if x != uid]
+        user_liked = [pid for pid in user_liked if pid != post_id]
+    else:
+        post_likes.append(uid)
+        if post_id not in user_liked:
+            user_liked.append(post_id)
+
+    post.likes = post_likes
+    current_user.liked = user_liked
+    session.add(post)
+    session.commit()
+    session.refresh(post)
+    return post
+
+@posts_router.delete("/{post_id}", status_code=status.HTTP_204_NO_CONTENT, response_model_by_alias=True)
+def delete_post(post_id: str, session: Session = Depends(get_session), current_user: User = Depends(get_current_user)):
+    post = session.get(Post, post_id)
+    if not post:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Post not found")
+    if post.author.id != current_user.id:
+        raise HTTPException(status.HTTP_403_FORBIDDEN, "You are not allowed to perform this action")
     session.delete(post)
     session.commit()
 
