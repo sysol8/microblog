@@ -39,8 +39,18 @@ export interface IUser {
   likes: number
 }
 
+export type AuthPayload = {
+  username: string
+  password: string
+}
+
+export type AuthAction = "login" | "register";
+
+export type AlertType = 'success' | 'warning' | 'error' | 'info';
+
 export interface IAlert {
   id: string;
-  type: 'success' | 'warning' | 'error' | 'info'
-  message: string
+  type: AlertType;
+  message: string;
+  faded: boolean;
 }
