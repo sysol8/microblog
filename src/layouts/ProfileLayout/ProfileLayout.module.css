@@ -26,3 +26,38 @@
 .username {
   font-size: 2.4rem;
 }
+
+.data {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-flow: row dense;
+  row-gap: 1.2rem;
+  column-gap: 2rem;
+}
+
+.article {
+  padding-block: 0.8rem;
+  padding-inline: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--primary-950);
+  border-radius: 0.8rem;
+  align-items: center;
+  justify-content: center;
+  block-size: 100%;
+  inline-size: 100%;
+  border: 1px solid var(--primary-900);
+}
+
+.articleHeading {
+  font-size: 2rem;
+}
+
+.likeIcon {
+  inline-size: 6.4rem;
+  block-size: 6.4rem;
+}
+
+.likes {
+  font-size: 4rem;
+}
