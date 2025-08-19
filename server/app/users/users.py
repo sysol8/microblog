@@ -10,6 +10,7 @@ from sqlmodel import Session, select
 
 from ..db.database import get_session
 from ..models import User, Post
+from ..posts.schemas import import PostRead
 from .schemas import UserCreate, UserRead, LoginRequest
 from ..security import hash_password, verify_password, needs_rehash
 from server.config import (
@@ -133,12 +134,21 @@ def _likes_received(session: Session, user_id: str) -> int:
 
 @users_router.get("/users/me", response_model=UserRead, response_model_by_alias=True)
 def get_me(current: User = Depends(get_current_user), session: Session = Depends(get_session)) -> UserRead:
+    recent_posts_db = session.exec(
+        select(Post)
+        .where(Post.created_by == current.id)
+        .order_by(Post.created_at.desc())
+        .limit(5)
+    ).all()
+
+    recent_posts = [PostRead.model_validate(p, from_attributes=True) for p in recent_posts_db]
+
     return UserRead(
         id=current.id,
         name=current.name,
         username=current.username,
         avatar_url=current.avatar_url,
-        posts=[p.id for p in (current.posts or []) if p and p.id],
+        posts=recent_posts,
         liked=current.liked,
         likes=_likes_received(session, current.id),
         created_at=current.created_at,
