@@ -1,6 +1,7 @@
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 from typing import List
+from ..posts.schemas import PostRead
 
 class UserCreate(BaseModel):
     name: str | None = None
@@ -20,8 +21,8 @@ class UserRead(BaseModel):
     name: str
     username: str
     avatar_url: str | None = Field(default=None, alias="avatarUrl")
-    posts: List[str] = []
-    liked: List[str] = []
+    posts: List[PostRead] = []
+    liked: List[PostRead] = []
     likes: int
     created_at: datetime = Field(alias="createdAt")
 
