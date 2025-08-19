@@ -1,7 +1,8 @@
 import styles from "./ProfileLayout.module.css";
 import type { IUser } from "../../utils/types.ts";
 import LogoutButton from "../../components/auth/Logout/LogoutButton.tsx";
-import LikeIcon from '../../assets/icons/like.svg?react';
+import { Link } from "react-router";
+import LikeIcon from "../../assets/icons/like.svg?react";
 
 interface ProfileLayoutProps {
   data: IUser;
@@ -23,16 +24,46 @@ function ProfileLayout({ data, isMe }: ProfileLayoutProps) {
         {isMe ? <LogoutButton /> : null}
         <section className={styles.data}>
           <article className={styles.article}>
-            <h3 className={styles.articleHeading}>{isMe ? 'Мои посты' : 'Посты'}</h3>
-            <ul className={styles.posts}></ul>
+            <h3 className={styles.articleHeading}>
+              {isMe ? "Мои посты" : "Посты"}
+            </h3>
+            {data.posts.length > 0 ? (
+              <ul className={styles.posts}>
+                {data.posts.map((post) => (
+                  <li key={post.id} className={styles.post}>
+                    <Link to="/">
+                      <span className={styles.counter}></span>
+                      <p className={styles.textContent}>{post.textContent}</p>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>Здесь пока пусто...</p>
+            )}
           </article>
           <article className={styles.article}>
             <h3 className={styles.articleHeading}>Понравившиеся</h3>
-            <ul className={styles.posts}></ul>
+            {data.liked.length > 0 ? (
+              <ul className={styles.posts}>
+                {data.liked.map((liked) => (
+                  <li key={liked.id} className={styles.post}>
+                    <Link to="/">
+                      <span className={styles.counter}></span>
+                      <p className={styles.textContent}>{liked.textContent}</p>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>Здесь пока пусто...</p>
+            )}
           </article>
           <article className={styles.article}>
-            <h3 className={styles.articleHeading}>{isMe ? 'Мои лайки' : 'Лайки'}</h3>
-            <LikeIcon className={styles.likeIcon}/>
+            <h3 className={styles.articleHeading}>
+              {isMe ? "Мои лайки" : "Лайки"}
+            </h3>
+            <LikeIcon className={styles.likeIcon} />
             <span className={styles.likes}>{data.likes}</span>
           </article>
         </section>
