@@ -7,9 +7,12 @@ export default function PostsLayout() {
   const { posts, deletePost, addPost } = usePosts();
 
   return (
-    <main className={styles.content} id="toaster-root">
-      <PostsList posts={posts} onDelete={deletePost}></PostsList>
-      <PostForm onPostAdd={addPost}></PostForm>
-    </main>
+    <div className={styles.wrapper}>
+      <main className={styles.content}>
+        <PostsList posts={posts} onDelete={deletePost}></PostsList>
+        <PostForm onPostAdd={addPost}></PostForm>
+      </main>
+      <aside className={`${styles.aside} ${styles.toasterRoot}`} id="toaster-root"></aside>
+    </div>
   );
 }
