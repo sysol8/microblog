@@ -1,13 +1,38 @@
 .toaster {
-  position: sticky;
   max-inline-size: 32rem;
-  align-self: end;
-  max-block-size: 50dvb;
-  overflow-y: auto;
+  position: sticky;
+  top: 49dvb;
+  margin-block-end: 1rem;
+  padding-inline-end: 1rem;
+  align-items: end;
 }
 
 .list {
+  block-size: 50dvb;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
   gap: 0.6rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  & > :first-child {
+    margin-block-start: auto;
+  }
+
+  &::-webkit-scrollbar { width: 0; height: 0; }
+}
+
+.item {
+  animation: toast-in 180ms;
+  will-change: opacity;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
 }
