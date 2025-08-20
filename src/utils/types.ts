@@ -35,7 +35,7 @@ export interface IUser {
   avatarUrl: string;
   createdAt: string;
   posts: IPost[];
-  liked: IPost[];
+  likedPosts: IPost[];
   likes: number
 }
 
