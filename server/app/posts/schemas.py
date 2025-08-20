@@ -3,6 +3,7 @@ from typing import List
 from pydantic import BaseModel, Field, ConfigDict
 
 class PostAuthor(BaseModel):
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)
     id: str
     username: str
     avatar_url: str | None = Field(default=None, alias="avatarUrl")
