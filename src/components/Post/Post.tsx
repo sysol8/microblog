@@ -18,7 +18,7 @@ export interface PostData {
 }
 
 export interface PostActions {
-  onDelete: (id: string) => void;
+  onDelete?: (id: string) => void;
 }
 
 type PostProps = PostData & PostActions;
@@ -81,7 +81,7 @@ function Post({ data, onDelete }: PostProps) {
             </button>
             <button
               className={styles.button}
-              onClick={() => onDelete(id)}
+              onClick={() => onDelete ? onDelete(id) : null}
               aria-label="Удалить"
             >
               <DeleteIcon className={styles.icon}></DeleteIcon>
