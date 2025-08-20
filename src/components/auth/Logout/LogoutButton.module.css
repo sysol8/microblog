@@ -1,0 +1,20 @@
+.button {
+  font-size: 1.6rem;
+  border-radius: 0.8rem;
+  border: 2px solid var(--primary-900);
+  line-height: 1;
+  padding-block: 0.8rem;
+  padding-inline: 1.2rem;
+
+  &:hover {
+    background-color: var(--primary-900);
+  }
+
+  &:active {
+    border-color: var(--primary-800);
+  }
+
+  &:focus-visible {
+    border-color: var(--primary-800);
+  }
+}
