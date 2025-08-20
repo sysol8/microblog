@@ -31,7 +31,8 @@ function LikeButton({ id, likes }: LikeButtonProps) {
       }, {
         onSuccess: undefined,
         onError: (e: unknown) => {
-          return;
+          setLiked(prev => !prev);
+          alertConfig.common.onNetworkError();
         }
       }
     )
