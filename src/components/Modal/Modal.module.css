@@ -15,6 +15,7 @@
 .modal {
   position: relative;
   max-inline-size: 50dvi;
+  min-inline-size: 25dvi;
 
   &:focus {
     outline: none;
