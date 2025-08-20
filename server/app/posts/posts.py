@@ -92,17 +92,19 @@ def toggle_like(
     if uid in post_likes:
         post_likes = [x for x in post_likes if x != uid]
         user_liked = [pid for pid in user_liked if pid != post_id]
+        liked = False
     else:
         post_likes.append(uid)
         if post_id not in user_liked:
             user_liked.append(post_id)
+        liked = True
 
     post.likes = post_likes
     current_user.liked = user_liked
     session.add(post)
     session.commit()
     session.refresh(post)
-    return post
+    return {"id": post_id, "likes": post.likes, "liked": liked }
 
 @posts_router.delete("/{post_id}", status_code=status.HTTP_204_NO_CONTENT, response_model_by_alias=True)
 def delete_post(post_id: str, session: Session = Depends(get_session), current_user: User = Depends(get_current_user)):
