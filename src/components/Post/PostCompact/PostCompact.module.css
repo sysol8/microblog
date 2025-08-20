@@ -1,0 +1,35 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  overflow: hidden;
+  cursor: pointer;
+  color: var(--text-50);
+  gap: 0.4rem;
+  font-size: 1.4rem;
+}
+
+.author {
+  display: flex;
+  gap: 0.8rem;
+  font-size: 1.6rem;
+}
+
+.avatar {
+  block-size: 4rem;
+  inline-size: 4rem;
+}
+
+.username {
+  align-self: end;
+}
+
+.textContent {
+  color: var(--text-200);
+}
+
+.attachments {
+  color: var(--text-400);
+}
