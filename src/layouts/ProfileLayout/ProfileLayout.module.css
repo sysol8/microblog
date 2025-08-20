@@ -12,6 +12,13 @@
   padding-block: 2.4rem;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-block-end: 2rem;
+  align-items: center;
+}
+
 .user {
   display: flex;
   gap: 2rem;
@@ -30,7 +37,7 @@
 .data {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-auto-flow: row dense;
+  grid-template-rows: repeat(auto-fit, 1fr);
   row-gap: 1.2rem;
   column-gap: 2rem;
 }
@@ -42,22 +49,60 @@
   flex-direction: column;
   background-color: var(--primary-950);
   border-radius: 0.8rem;
-  align-items: center;
-  justify-content: center;
-  block-size: 100%;
   inline-size: 100%;
   border: 1px solid var(--primary-900);
+  gap: 1.2rem;
 }
 
 .articleHeading {
   font-size: 2rem;
+  text-align: center;
+}
+
+.likesArticle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
 .likeIcon {
-  inline-size: 6.4rem;
-  block-size: 6.4rem;
+  inline-size: 12.8rem;
+  block-size: 12.8rem;
+  color: var(--secondary-600);
+  fill: currentColor;
 }
 
 .likes {
   font-size: 4rem;
+  position: absolute;
+}
+
+.posts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.post {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  align-items: center;
+}
+
+.counter {
+  font-weight: 450;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  font-size: 1.4rem;
+  block-size: 3.2rem;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background-color: var(--primary-900);
 }
