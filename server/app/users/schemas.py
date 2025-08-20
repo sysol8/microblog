@@ -21,8 +21,8 @@ class UserRead(BaseModel):
     name: str
     username: str
     avatar_url: str | None = Field(default=None, alias="avatarUrl")
-    posts: List[PostRead] = []
-    liked: List[PostRead] = []
+    posts: List[PostRead] = Field(default_factory=list)
+    liked_posts: List[PostRead] = Field(default_factory=list, alias="likedPosts")
     likes: int
     created_at: datetime = Field(alias="createdAt")
 
