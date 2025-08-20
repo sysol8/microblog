@@ -10,7 +10,7 @@ from sqlmodel import Session, select
 
 from ..db.database import get_session
 from ..models import User, Post
-from ..posts.schemas import import PostRead
+from ..posts.schemas import PostRead
 from .schemas import UserCreate, UserRead, LoginRequest
 from ..security import hash_password, verify_password, needs_rehash
 from server.config import (
@@ -109,6 +109,13 @@ def _clear_auth_cookies(resp: Response) -> None:
                 expires=0,
             )
 
+def _map_posts(posts_db: list[Post]) -> list[PostRead]:
+    return [PostRead.model_validate(p, from_attributes=True) for p in posts_db]
+
+def _likes_received(session: Session, user_id: str) -> int:
+    rows = session.exec(select(Post.likes).where(Post.created_by == user_id)).all()
+    return sum(len(l or []) for l in rows)
+
 def get_current_user(
         request: Request,
         session: Session = Depends(get_session),
@@ -134,26 +141,33 @@ def _likes_received(session: Session, user_id: str) -> int:
 
 @users_router.get("/users/me", response_model=UserRead, response_model_by_alias=True)
 def get_me(current: User = Depends(get_current_user), session: Session = Depends(get_session)) -> UserRead:
-    recent_posts_db = session.exec(
+    own_posts_db = session.exec(
         select(Post)
         .where(Post.created_by == current.id)
         .order_by(Post.created_at.desc())
         .limit(5)
     ).all()
 
-    recent_posts = [PostRead.model_validate(p, from_attributes=True) for p in recent_posts_db]
+    liked_ids = list(current.liked or [])
+    liked_posts_db: list[Post] = []
+    if liked_ids:
+        liked_posts_db = session.exec(
+            select(Post)
+            .where(Post.id.in_(liked_ids))
+            .order_by(Post.created_at.desc())
+            .limit(5)
+        ).all()
 
     return UserRead(
         id=current.id,
         name=current.name,
         username=current.username,
         avatar_url=current.avatar_url,
-        posts=recent_posts,
-        liked=current.liked,
+        posts=_map_posts(own_posts_db),
+        liked_posts=_map_posts(liked_posts_db),
         likes=_likes_received(session, current.id),
         created_at=current.created_at,
     )
-
 @users_router.post("/register", status_code=status.HTTP_201_CREATED)
 def register(payload: UserCreate, session: Session = Depends(get_session)) -> Response:
     uname = _normalize_username(payload.username)
@@ -212,15 +226,30 @@ def get_user(user_id: str, session: Session = Depends(get_session)) -> UserRead:
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
-    post_ids = [p.id for p in (user.posts or []) if p and p.id]
+    own_posts_db = session.exec(
+        select(Post)
+        .where(Post.created_by == user.id)
+        .order_by(Post.created_at.desc())
+        .limit(5)
+    ).all()
+
+    liked_ids = list(user.liked or [])
+    liked_posts_db: list[Post] = []
+    if liked_ids:
+        liked_posts_db = session.exec(
+            select(Post)
+            .where(Post.id.in_(liked_ids))
+            .order_by(Post.created_at.desc())
+            .limit(5)
+        ).all()
 
     return UserRead(
         id=user.id,
         name=user.name,
         username=user.username,
         avatar_url=user.avatar_url,
-        posts=post_ids,
-        liked=user.liked,
+        posts=_map_posts(own_posts_db),
+        liked_posts=_map_posts(liked_posts_db),
         likes=user.likes,
         created_at=user.created_at,
     )
