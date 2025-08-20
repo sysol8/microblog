@@ -1,8 +1,8 @@
 import styles from "./ProfileLayout.module.css";
 import type { IUser } from "../../utils/types.ts";
 import LogoutButton from "../../components/auth/Logout/LogoutButton.tsx";
-import { Link } from "react-router";
 import LikeIcon from "../../assets/icons/like.svg?react";
+import PostCompact from "../../components/Post/PostCompact/PostCompact.tsx";
 
 interface ProfileLayoutProps {
   data: IUser;
@@ -13,6 +13,7 @@ function ProfileLayout({ data, isMe }: ProfileLayoutProps) {
   return (
     <main className={styles.content}>
       <div className={styles.wrapper}>
+        <div className={styles.header}>
         <div className={styles.user}>
           <img
             className={styles.avatar}
@@ -22,6 +23,7 @@ function ProfileLayout({ data, isMe }: ProfileLayoutProps) {
           <h2 className={styles.username}>{data.username}</h2>
         </div>
         {isMe ? <LogoutButton /> : null}
+      </div>
         <section className={styles.data}>
           <article className={styles.article}>
             <h3 className={styles.articleHeading}>
@@ -29,12 +31,10 @@ function ProfileLayout({ data, isMe }: ProfileLayoutProps) {
             </h3>
             {data.posts.length > 0 ? (
               <ul className={styles.posts}>
-                {data.posts.map((post) => (
+                {data.posts.map((post, index) => (
                   <li key={post.id} className={styles.post}>
-                    <Link to="/">
-                      <span className={styles.counter}></span>
-                      <p className={styles.textContent}>{post.textContent}</p>
-                    </Link>
+                    <span className={styles.counter}>{index + 1}</span>
+                    <PostCompact data={post}></PostCompact>
                   </li>
                 ))}
               </ul>
@@ -44,14 +44,12 @@ function ProfileLayout({ data, isMe }: ProfileLayoutProps) {
           </article>
           <article className={styles.article}>
             <h3 className={styles.articleHeading}>Понравившиеся</h3>
-            {data.liked.length > 0 ? (
+            {data.likedPosts.length > 0 ? (
               <ul className={styles.posts}>
-                {data.liked.map((liked) => (
+                {data.likedPosts.map((liked, index) => (
                   <li key={liked.id} className={styles.post}>
-                    <Link to="/">
-                      <span className={styles.counter}></span>
-                      <p className={styles.textContent}>{liked.textContent}</p>
-                    </Link>
+                    <span className={styles.counter}>{index + 1}</span>
+                    <PostCompact data={liked}></PostCompact>
                   </li>
                 ))}
               </ul>
@@ -59,12 +57,14 @@ function ProfileLayout({ data, isMe }: ProfileLayoutProps) {
               <p>Здесь пока пусто...</p>
             )}
           </article>
-          <article className={styles.article}>
+          <article className={`${styles.article}`}>
             <h3 className={styles.articleHeading}>
               {isMe ? "Мои лайки" : "Лайки"}
             </h3>
-            <LikeIcon className={styles.likeIcon} />
-            <span className={styles.likes}>{data.likes}</span>
+            <div className={styles.likesArticle}>
+              <LikeIcon className={styles.likeIcon} />
+              <span className={styles.likes}>{data.likes}</span>
+            </div>
           </article>
         </section>
       </div>
