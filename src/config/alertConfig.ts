@@ -10,6 +10,7 @@ export const alertConfig = {
     onAuthRequired: () => useAlertStore.getState().warning(alertMessages.auth.authRequired),
   },
   common: {
-    onNetworkError: () => useAlertStore.getState().error(alertMessages.common.network)
+    onNetworkError: () => useAlertStore.getState().error(alertMessages.common.network),
+    onNotFound: () => useAlertStore.getState().error(alertMessages.common.notFound)
   }
 } as const;
