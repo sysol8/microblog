@@ -1,8 +1,8 @@
 import type { IUser, AuthPayload } from "../utils/types.ts";
 import { ensureOk, BASE_URL, parseJson } from "./base.ts";
 
-async function getUser(id: string): Promise<IUser> {
-  const response = await fetch(`${BASE_URL}/api/users/${id}`, {
+async function getUser(username: string): Promise<IUser> {
+  const response = await fetch(`${BASE_URL}/api/users/${username}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
