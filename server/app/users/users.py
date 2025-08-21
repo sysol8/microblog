@@ -220,15 +220,17 @@ def logout(response: Response) -> Response:
     return response
 
 
-@users_router.get("/users/{user_id}", response_model=UserRead, response_model_by_alias=True)
-def get_user(user_id: str, session: Session = Depends(get_session)) -> UserRead:
-    user = session.get(User, user_id)
+@users_router.get("/users/{username}", response_model=UserRead, response_model_by_alias=True)
+def get_user(username: str, session: Session = Depends(get_session)) -> UserRead:
+    user = session.exec(
+        select(User).where(User.username == username)
+    ).first()
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
     own_posts_db = session.exec(
         select(Post)
-        .where(Post.created_by == user.id)
+        .where(Post.created_by == user.username)
         .order_by(Post.created_at.desc())
         .limit(5)
     ).all()
