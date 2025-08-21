@@ -13,9 +13,13 @@
 }
 
 .modal {
-  position: relative;
   max-inline-size: 50dvi;
-  min-inline-size: 25dvi;
+  inline-size: fit-content;
+  min-inline-size: 32rem;
+  position: relative;
+  background-color: var(--primary-950);
+  padding: 1.6rem;
+  border-radius: 0.8rem;
 
   &:focus {
     outline: none;
@@ -26,8 +30,8 @@
   position: absolute;
   right: 0;
   top: 0;
-  block-size: 6.4rem;
-  inline-size: 6.4rem;
+  block-size: 5.6rem;
+  inline-size: 5.6rem;
   color: var(--text-50);
   display: flex;
   transform: translate(50%, -50%);
@@ -47,7 +51,6 @@
 }
 
 .icon {
-  display: inline-block;
   block-size: 100%;
   inline-size: 100%;
 }
@@ -55,6 +58,8 @@
 .modalContent {
   block-size: 100%;
   inline-size: 100%;
+  border: 2px solid var(--primary-900);
+  border-radius: 0.4rem;
 
   img:focus {
     outline: none;
