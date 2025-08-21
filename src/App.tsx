@@ -28,6 +28,9 @@ function App() {
             <Route element={<ProtectedRoute />}>
               <Route path="users/me" element={<ProfileLayout data={user as IUser} isMe={true}/>} />
             </Route>
+            <Route element={<ProtectedRoute />}>
+              <Route path="users/:username" element={<ProfileLayout isMe={false} data={user as IUser} />} />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>
