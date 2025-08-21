@@ -43,10 +43,6 @@
   gap: 0.4rem;
 }
 
-.label:last-of-type {
-  margin-bottom: 1.2rem;
-}
-
 .input {
   border: 2px solid var(--primary-900);
   border-radius: calc(var(--bd-radius) / 2);
@@ -83,6 +79,11 @@
 .action {
   background-color: var(--primary-400);
   color: var(--text-950);
+}
+
+.error {
+  color: var(--secondary-500);
+  font-size: 1.4rem;
 }
 
 
