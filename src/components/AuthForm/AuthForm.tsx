@@ -57,6 +57,7 @@ function LoginForm({ onSubmit }: AuthFormActions) {
           value={form.username}
           placeholder="ivanov.ivan123"
           onChange={handleInputChange}
+          disabled={submitting}
         />
       </label>
       <label className={styles.label} htmlFor="password">
@@ -69,15 +70,13 @@ function LoginForm({ onSubmit }: AuthFormActions) {
           type="password"
           value={form.password}
           onChange={handleInputChange}
+          disabled={submitting}
         />
       </label>
-      {error && <span className={styles.error}>{error}</span>}
+      {error instanceof Error && <span className={styles.error}>{error.message}</span>}
       <div className={styles.buttons}>
-        <button className={`${styles.button} ${styles.action}`} type="submit">
+        <button className={`${styles.button} ${styles.action}`} type="submit" disabled={submitting}>
           Войти
-        </button>
-        <button className={styles.button} type="button">
-          Забыли пароль?
         </button>
       </div>
     </form>
@@ -104,6 +103,7 @@ function RegisterForm({ onSubmit }: AuthFormActions) {
           placeholder="ivanov.ivan123"
           value={form.username}
           onChange={handleInputChange}
+          disabled={submitting}
         />
       </label>
       <label className={styles.label} htmlFor="password">
@@ -116,11 +116,13 @@ function RegisterForm({ onSubmit }: AuthFormActions) {
           placeholder="••••••••"
           value={form.password}
           onChange={handleInputChange}
+          disabled={submitting}
         />
       </label>
-      {error && <span className={styles.error}>{error}</span>}
+      {/* TODO: Добавить проверку на доступность юзернейма в реальном времени */}
+      {error instanceof Error && <span className={styles.error}>{error.message}</span>}
       <div className={styles.buttons}>
-        <button className={`${styles.button} ${styles.action}`} type="submit">
+        <button className={`${styles.button} ${styles.action}`} type="submit" disabled={submitting}>
           Зарегистрироваться
         </button>
       </div>
