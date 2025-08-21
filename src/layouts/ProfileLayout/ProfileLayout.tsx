@@ -1,8 +1,11 @@
 import styles from "./ProfileLayout.module.css";
-import type { IUser } from "../../utils/types.ts";
-import LogoutButton from "../../components/auth/Logout/LogoutButton.tsx";
 import LikeIcon from "../../assets/icons/like.svg?react";
+import type { IUser } from "../../utils/types.ts";
+import { useEffect, useState, useMemo } from 'react';
+import LogoutButton from "../../components/auth/Logout/LogoutButton.tsx";
 import PostCompact from "../../components/Post/PostCompact/PostCompact.tsx";
+import { getUser } from "../../api/users.ts";
+import { useParams } from "react-router";
 
 interface ProfileLayoutProps {
   data: IUser;
@@ -10,6 +13,51 @@ interface ProfileLayoutProps {
 }
 
 function ProfileLayout({ data, isMe }: ProfileLayoutProps) {
+  const { username } = useParams();
+
+  // TEMP: временное решение (и временно не работающее). По текущей задумке
+  //  компонент фетчит данные пользователя, если флаг isMe установлен на false.
+  //  В противном случае берутся данные авторизованного пользователя из глобального стейта.
+  /*
+  const [remote, setRemote] = useState<IUser | null>(null);
+  const [loading, setLoading] = useState<boolean>(!isMe);
+  const [error, setError] = useState<string | null>(null);
+
+
+  useEffect(() => {
+    if (isMe) return;
+
+    const ac = new AbortController();
+    (async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        if (!username) {
+          setError("Пользователь не указан");
+          return;
+        }
+        const res = await getUser(username);
+        setRemote(res);
+      } catch (e) {
+        if ((e instanceof Error).name !== "AbortError") {
+          setError(e instanceof Error ? e.message : "Ошибка загрузки профиля");
+        }
+      } finally {
+        setLoading(false);
+      }
+    })();
+
+    return () => ac.abort();
+  }, [isMe, username]);
+
+  const profile = useMemo<IUser | null>(() => {
+    return isMe ? (data ?? null) : remote;
+  }, [isMe, data, remote]);
+
+  if (!isMe && loading) return <p>Загрузка…</p>;
+  if (!profile) return <p>{error ?? "Пользователь не найден"}</p>;
+  */
+
   return (
     <main className={styles.content}>
       <div className={styles.wrapper}>
