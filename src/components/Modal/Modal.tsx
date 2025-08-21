@@ -1,8 +1,9 @@
 import styles from "./Modal.module.css";
+import CancelIcon from "../../assets/icons/cancel.svg?react";
 import { useCallback, useEffect, useRef, type MouseEvent } from "react";
+import { useLocation } from 'react-router';
 import { createPortal } from "react-dom";
 import { useModalStore } from "../../store/modalStore.ts";
-import CancelIcon from "../../assets/icons/cancel.svg?react";
 
 function Modal() {
   const isOpen = useModalStore((s) => s.isOpen);
@@ -10,6 +11,8 @@ function Modal() {
   const close = useModalStore((s) => s.close);
 
   const dialogRef = useRef<HTMLDivElement>(null);
+
+  const location = useLocation();
 
   const closeByOverlayClick = (e: MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) close();
@@ -21,6 +24,10 @@ function Modal() {
     },
     [close],
   );
+
+  useEffect(() => {
+    if (isOpen) close();
+  }, [location]);
 
   useEffect(() => {
     if (!isOpen) return;
