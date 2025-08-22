@@ -3,6 +3,11 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 from typing import List
 from ..posts.schemas import PostRead
 
+class UserUpdate(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+    id: str
+    avatar_url: str = Field(alias="avatarUrl")
+
 class UserCreate(BaseModel):
     name: str | None = None
     username: str
