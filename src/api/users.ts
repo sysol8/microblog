@@ -55,4 +55,15 @@ async function logout(): Promise<void> {
   await ensureOk(response);
 }
 
-export { getUser, register, login, logout, getMe };
+async function editAvatar(avatar: File): Promise<{ id: string; avatarUrl: string }> {
+  const formData = new FormData();
+  formData.append("avatar", avatar);
+  const response = await fetch(`${BASE_URL}/api/users/me/edit`, {
+    method: "PATCH",
+    body: formData,
+    credentials: "include",
+  });
+  return parseJson(response);
+}
+
+export { getUser, register, login, logout, getMe, editAvatar };
