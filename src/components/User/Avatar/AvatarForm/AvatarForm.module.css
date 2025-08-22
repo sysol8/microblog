@@ -1,0 +1,28 @@
+.form {
+  block-size: 100%;
+  inline-size: 100%;
+  position: absolute;
+  inset: 0;
+  display: flex;
+
+  &:hover {
+    .label {
+      display: flex;
+    }
+  }
+}
+
+.label {
+  display: none;
+  background-color: color-mix(in oklch, var(--primary-950), transparent 50%);
+  block-size: 100%;
+  inline-size: 100%;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.icon {
+  block-size: 50%;
+  inline-size: 50%;
+}
