@@ -11,7 +11,9 @@ export default function AppLayout() {
       <Modal></Modal>
       <AlertToaster></AlertToaster>
       <Header></Header>
-      <Outlet />
+      <div className={styles.content}>
+        <Outlet />
+      </div>
       <Footer></Footer>
     </div>
   );

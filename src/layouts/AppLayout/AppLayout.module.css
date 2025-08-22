@@ -6,3 +6,9 @@
   inline-size: 100%;
   min-block-size: 100dvb;
 }
+
+.content {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
