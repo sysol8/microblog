@@ -2,16 +2,18 @@ from __future__ import annotations
 
 from uuid import uuid4
 from datetime import datetime, timedelta, timezone
+import asyncio
 
-from fastapi import APIRouter, Depends, HTTPException, Response, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Response, Request, status, File, UploadFile
 from jose import jwt, JWTError
 from sqlalchemy import func
 from sqlmodel import Session, select
 
+from ..aws import upload_to_s3
 from ..db.database import get_session
 from ..models import User, Post
 from ..posts.schemas import PostRead
-from .schemas import UserCreate, UserRead, LoginRequest
+from .schemas import UserCreate, UserRead, LoginRequest, UserUpdate
 from ..security import hash_password, verify_password, needs_rehash
 from server.config import (
     JWT_SECRET, JWT_ALG, JWT_EXPIRE_MIN,
@@ -214,7 +216,10 @@ def login(payload: LoginRequest, response: Response, session: Session = Depends(
 
 
 @users_router.post("/logout", status_code=status.HTTP_204_NO_CONTENT)
-def logout(response: Response) -> Response:
+def logout(response: Response, current: User = Depends(get_current_user)) -> Response:
+    if not current:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
     _clear_auth_cookies(response)
     response.status_code=status.HTTP_200_OK
     return response
@@ -222,15 +227,17 @@ def logout(response: Response) -> Response:
 
 @users_router.get("/users/{username}", response_model=UserRead, response_model_by_alias=True)
 def get_user(username: str, session: Session = Depends(get_session)) -> UserRead:
+    uname = (username or "").strip().lower()
+
     user = session.exec(
-        select(User).where(User.username == username)
+        select(User).where(func.lower(User.username) == uname)
     ).first()
     if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        raise HTTPException(status_code=404, detail="User not found")
 
     own_posts_db = session.exec(
         select(Post)
-        .where(Post.created_by == user.username)
+        .where(Post.created_by == user.id)
         .order_by(Post.created_at.desc())
         .limit(5)
     ).all()
@@ -252,6 +259,31 @@ def get_user(username: str, session: Session = Depends(get_session)) -> UserRead
         avatar_url=user.avatar_url,
         posts=_map_posts(own_posts_db),
         liked_posts=_map_posts(liked_posts_db),
-        likes=user.likes,
+        likes=_likes_received(session, user.id),
         created_at=user.created_at,
+    )
+
+@users_router.patch("/users/me/edit", response_model=UserUpdate, response_model_by_alias=True)
+async def change_profile(current_user: User = Depends(get_current_user), session: Session = Depends(get_session), avatar: UploadFile = File(...)):
+    cont_type = (avatar.content_type or "").lower()
+    if not cont_type.startswith("image/"):
+        raise HTTPException(status_code=415, detail="Only image files are allowed")
+
+    try:
+        url = await asyncio.to_thread(
+            upload_to_s3,
+            avatar.file,
+            avatar.filename or "avatar",
+        )
+    except Exception as e:
+        raise HTTPException(status_code=502, detail=f"S3 upload failed: {e!s}")
+
+    current_user.avatar_url = url
+    session.add(current_user)
+    session.commit()
+    session.refresh(current_user)
+
+    return UserUpdate(
+        id=current_user.id,
+        avatar_url=current_user.avatar_url
     )
