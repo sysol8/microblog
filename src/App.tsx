@@ -6,17 +6,15 @@ import PostsLayout from "./layouts/PostsLayout/PostsLayout.tsx";
 import AuthLayout from "./layouts/AuthLayout/AuthLayout.tsx";
 import ProfileLayout from "./layouts/ProfileLayout/ProfileLayout.tsx";
 import ProtectedRoute from "./routes/ProtectedRoute.tsx";
-import { useEffect } from 'react';
-import { useAuthStore } from './store/authStore.ts';
-import type { IUser } from "./utils/types.ts";
+import { useEffect } from "react";
+import { useAuthStore } from "./store/authStore.ts";
 
 function App() {
-  const checkAuth = useAuthStore((state) => state.checkAuth)
-  const user = useAuthStore((state) => state.user)
+  const checkAuth = useAuthStore((state) => state.checkAuth);
 
   useEffect(() => {
     checkAuth();
-  }, [checkAuth])
+  }, [checkAuth]);
 
   return (
     <StrictMode>
@@ -26,16 +24,19 @@ function App() {
             <Route index element={<PostsLayout />} />
             <Route path="login" element={<AuthLayout />} />
             <Route element={<ProtectedRoute />}>
-              <Route path="users/me" element={<ProfileLayout data={user as IUser} isMe={true}/>} />
+              <Route path="users/me" element={<ProfileLayout isMe={true} />} />
             </Route>
             <Route element={<ProtectedRoute />}>
-              <Route path="users/:username" element={<ProfileLayout isMe={false} data={user as IUser} />} />
+              <Route
+                path="users/:username"
+                element={<ProfileLayout isMe={false} />}
+              />
             </Route>
           </Route>
         </Routes>
       </BrowserRouter>
     </StrictMode>
-  )
+  );
 }
 
 export default App;
