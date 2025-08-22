@@ -4,7 +4,6 @@ import { useAuthStore } from "../store/authStore.ts";
 function ProtectedRoute() {
   const { user } = useAuthStore();
   const location = useLocation();
-  console.log(user);
 
   if (user === undefined) return null;
 
