@@ -12,6 +12,7 @@ import { modalStore } from "../../store/modalStore.ts";
 import { Link } from "react-router";
 import LikeButton from "./LikeButton/LikeButton.tsx";
 import { useProtectedAction } from "../../hooks/useProtectedAction.ts";
+import Avatar from "../User/Avatar/Avatar.tsx";
 
 export interface PostData {
   data: IPost;
@@ -36,13 +37,7 @@ function Post({ data, onDelete }: PostProps) {
     <article key={id} className={styles.post}>
       <header className={styles.header}>
         <Link className={styles.author} to={`/users/${author.username}`}>
-          <img
-            className={styles.avatar}
-            src={
-              author.avatarUrl ? author.avatarUrl : "/avatar-placeholder.png"
-            }
-            alt={`Аватар пользователя ${author.username}`}
-          ></img>
+          <Avatar src={author.avatarUrl} username={author.username} mode={"post"}/>
           <span className={styles.name}>{author.username}</span>
         </Link>
         <time className={styles.time} dateTime={createdAt}>
