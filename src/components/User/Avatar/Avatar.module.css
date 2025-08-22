@@ -1,0 +1,20 @@
+.avatar {
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.profileAvatar {
+  inline-size: 6.4rem;
+  block-size: 6.4rem;
+}
+
+.postAvatar {
+  inline-size: 4.8rem;
+  block-size: 4.8rem;
+}
+
+.image {
+  block-size: 100%;
+  inline-size: 100%;
+}
