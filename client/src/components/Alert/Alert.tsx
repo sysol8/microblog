@@ -5,6 +5,7 @@ import ErrorIcon from '../../assets/icons/error.svg?react';
 import InfoIcon from '../../assets/icons/info.svg?react';
 import CancelIcon from '../../assets/icons/cancel.svg?react';
 import type { IAlert } from "../../utils/types.ts";
+import clsx from 'clsx';
 
 interface AlertActions {
   onDelete: (id: string) => void;
@@ -38,7 +39,7 @@ const ALERT_TYPE_CONFIG = {
 export default function Alert({ id, type, message, onDelete, faded }: AlertProps) {
   const { Icon, className, header } = ALERT_TYPE_CONFIG[type];
   return (
-    <div className={`${styles.alert} ${className} ${faded ? styles.faded : ''}`}>
+    <div className={clsx(styles.alert, className, faded && styles.faded)}>
       <button className={styles.close} type="button" onClick={() => onDelete(id)}>
         <CancelIcon className={styles.closeIcon} />
       </button>

@@ -32,14 +32,27 @@
 }
 
 .success {
-  background-color: var(--primary-500);
+  background-color: var(--primary-100);
   border-color: var(--primary-400);
+  color: var(--primary-700);
 }
 
 .warning {
   background-color: var(--secondary-100);
   border-color: var(--secondary-400);
-  color: var(--secondary-400);
+  color: var(--secondary-700);
+}
+
+.error {
+  background-color: var(--secondary-500);
+  border-color: var(--secondary-600);
+  color: var(--secondary-100);
+}
+
+.info {
+  background-color: var(--background-100);
+  border-color: var(--background-400);
+  color: var(--background-700);
 }
 
 .icon {
