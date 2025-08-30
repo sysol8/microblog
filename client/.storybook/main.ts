@@ -2,7 +2,7 @@ import type { StorybookConfig } from '@storybook/react-vite';
 import svgr from "vite-plugin-svgr";
 
 const config: StorybookConfig = {
-    stories: ['../src/**/**/*.stories.@(ts|tsx)'],
+    stories: ['../src/**/**/*.stories.@(ts|tsx)', '../src/**/**/*.stories.@(ts|tsx)'],
     framework: '@storybook/react-vite',
     addons: ['@storybook/addon-essentials'],
     viteFinal: async (config) => {
