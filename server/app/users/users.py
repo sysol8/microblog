@@ -15,7 +15,7 @@ from ..models import User, Post
 from ..posts.schemas import PostRead
 from .schemas import UserCreate, UserRead, LoginRequest, UserUpdate
 from ..security import hash_password, verify_password, needs_rehash
-from server.config import (
+from app.config import (
     JWT_SECRET, JWT_ALG, JWT_EXPIRE_MIN,
     AUTH_COOKIE_NAME, CSRF_COOKIE_NAME,
     SECURE_COOKIES, AUTH_SAMESITE, AUTH_COOKIE_DOMAIN
