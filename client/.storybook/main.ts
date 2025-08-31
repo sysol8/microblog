@@ -5,6 +5,7 @@ const config: StorybookConfig = {
     stories: ['../src/**/**/*.stories.@(ts|tsx)', '../src/**/**/*.stories.@(ts|tsx)'],
     framework: '@storybook/react-vite',
     addons: ['@storybook/addon-essentials'],
+    staticDirs: ['../public'],
     viteFinal: async (config) => {
         config.plugins = [...(config.plugins ?? []), svgr()];
         return config;
