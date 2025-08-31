@@ -1,0 +1,36 @@
+.attachedImageContainer {
+  position: relative;
+  inline-size: 100%;
+  aspect-ratio: 3/2;
+  max-inline-size: 32rem;
+  color: var(--text-50);
+
+  &:has(.remove) {
+    cursor: pointer;
+  }
+
+  &:has(.remove):hover .attachedImage {
+    filter: brightness(0.5);
+  }
+}
+
+.attachedImage {
+  block-size: 100%;
+  inline-size: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.remove {
+  block-size: 4.8rem;
+  aspect-ratio: 1;
+  position: absolute;
+  display: flex;
+  right: 0;
+  top: 0;
+}
+
+.icon {
+  block-size: 100%;
+  inline-size: 100%;
+}
