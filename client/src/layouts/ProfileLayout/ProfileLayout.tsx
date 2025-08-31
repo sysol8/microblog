@@ -72,7 +72,7 @@ function ProfileLayout({ isMe }: ProfileLayoutProps) {
                   ))}
                 </ul>
               ) : (
-                <p>Здесь пока пусто...</p>
+                <p className={styles.empty}>Здесь пока пусто...</p>
               )}
             </article>
             <article className={styles.article}>
@@ -87,7 +87,7 @@ function ProfileLayout({ isMe }: ProfileLayoutProps) {
                   ))}
                 </ul>
               ) : (
-                <p>Здесь пока пусто...</p>
+                <p className={styles.empty}>Здесь пока пусто...</p>
               )}
             </article>
             <article className={`${styles.article}`}>
