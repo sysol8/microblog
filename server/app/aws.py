@@ -6,7 +6,7 @@ from typing import BinaryIO
 import boto3
 from botocore.config import Config
 from botocore.exceptions import ClientError
-from server.config import (
+from app.config import (
     S3_SECRET_ACCESS_KEY,
     S3_ACCESS_KEY_ID,
     S3_DEFAULT_REGION,
