@@ -31,7 +31,13 @@ const withRouter: Decorator = (Story) => (
 
 const meta: Meta<typeof Modal> = {
     title: 'Modal',
+  tags: ['autodocs'],
     component: Modal,
+    globals: {
+      backgrounds: {
+        value: 'dark'
+      }
+  },
     parameters: { layout: 'centered' },
     decorators: [usePortalRoot, withRouter],
 };
@@ -39,15 +45,15 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-// Удобный хелпер для открытия модалки
-function openModal(content: React.ReactNode) {
+// хелпер для открытия модалки
+function openModal(content: ReactNode) {
     useModalStore.setState({ isOpen: true, content });
 }
 
 export const Playground: Story = {
     render: () => (
         <>
-            <button
+            <button style={{ color: 'white', fontSize: '20px' }}
                 onClick={() =>
                     openModal(
                         <div style={{ padding: 16, color: 'white' }}>
