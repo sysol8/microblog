@@ -35,7 +35,7 @@ def _one_of(name: str, allowed: set[str], default: str) -> str:
     return val
 
 DATABASE_URL: str = _opt("DATABASE_URL", "sqlite:///./db.sqlite3")
-SQL_ECHO: bool = _as_bool("SQL_ECHO", True)  # влияет на echo=True|False в create_engine
+SQL_ECHO: bool = _as_bool("SQL_ECHO", True)
 SQLITE_CHECK_SAME_THREAD: bool = _as_bool("SQLITE_CHECK_SAME_THREAD", True)
 
 S3_ENDPOINT_URL: str = _req("AWS_ENDPOINT_URL")
