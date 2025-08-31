@@ -1,7 +1,6 @@
 from sqlmodel import SQLModel, create_engine, Session
-from server.config import DATABASE_URL, SQL_ECHO, SQLITE_CHECK_SAME_THREAD
+from app.config import SQL_ECHO, SQLITE_CHECK_SAME_THREAD, DATABASE_URL
 
-DATABASE_URL = "sqlite:///./db.sqlite3"
 engine = create_engine(
     DATABASE_URL,
     echo=SQL_ECHO,
