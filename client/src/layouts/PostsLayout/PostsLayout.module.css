@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: 1fr max-content 1fr;
   justify-content: center;
+  flex-grow: 1;
 }
 
 .content {
@@ -14,4 +15,5 @@
 
 .toasterRoot {
   justify-self: end;
+  align-self: end;
 }
