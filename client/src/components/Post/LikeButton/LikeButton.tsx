@@ -20,7 +20,7 @@ function LikeButton({ id, likes }: LikeButtonProps) {
 
   const like = async () => {
     if (!user) {
-      alertConfig.auth.onAuthRequired();
+      alertConfig.auth.onAuthRequired('поставить лайк');
       return;
     }
 
