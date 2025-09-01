@@ -1,15 +1,14 @@
-FROM python:3.12-slim
+FROM node:24-alpine3.22
 
 WORKDIR /app
 
-COPY requirements.txt .
+COPY package*.json ./
 
-RUN pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir -r requirements.txt
+RUN npm install
 
 COPY . .
 
-EXPOSE 8000
+EXPOSE 3000
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["npm", "run", "start:dev"]
 

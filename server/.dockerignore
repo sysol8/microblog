@@ -1,10 +1,1 @@
-venv
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-*.db
-*.sqlite3
 .env
-aws_test.py
-reset_db.py
