@@ -1,2 +1,2 @@
-import { expect, test } from 'vitest';
+import { expect, test, describe, it } from 'vitest';
 import { render } from 'vitest-browser-react';
