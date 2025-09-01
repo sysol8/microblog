@@ -7,7 +7,7 @@ import AlertToaster from "../../components/Toaster/AlertToaster/AlertToaster.tsx
 
 export default function AppLayout() {
   return (
-    <div className={`${styles.layout}`}>
+    <div className={styles.layout}>
       <Modal></Modal>
       <AlertToaster></AlertToaster>
       <Header></Header>
