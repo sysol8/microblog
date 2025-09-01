@@ -4,7 +4,7 @@ export const alertMessages = {
     addError: "Не удалось опубликовать пост",
   },
   auth: {
-    authRequired: "Войдите или зарегистрируйтесь, чтобы выполнить действие",
+    authRequired: (action: string) =>`Войдите или зарегистрируйтесь, чтобы ${action}`,
   },
   common: {
     network: "Ошибка сети. Повторите попытку позже",
