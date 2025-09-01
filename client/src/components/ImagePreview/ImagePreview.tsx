@@ -9,6 +9,7 @@ interface ImagePreviewProps {
   children?: ReactNode;
 }
 
+// TODO: сейчас вместо alt у <img> мы рендерим <span>. Нужно всегда отображать <img> с нативным alt.
 function ImagePreview({
   file,
   containerClassName,
