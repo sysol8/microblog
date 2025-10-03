@@ -7,10 +7,15 @@ const UserLoginRequestSchema = z.object({
 });
 
 const UserLoginResponseSchema = z.object({
+  id: z.string(),
   username: z.string(),
+  accessToken: z.jwt(),
 });
 
 export type UserLoginRequest = z.infer<typeof UserLoginRequestSchema>;
 export type UserLoginResponse = z.infer<typeof UserLoginResponseSchema>;
 
-export class UserLoginDto extends createZodDto(UserLoginRequestSchema) {}
+export class UserLoginRequestDto extends createZodDto(UserLoginRequestSchema) {}
+export class UserLoginResponseDto extends createZodDto(
+  UserLoginResponseSchema,
+) {}
