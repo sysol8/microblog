@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+// схема валидации .env-переменных, связанных с S3-совместимым хранилищем
 export const validationSchema = z.object({
   S3_ENDPOINT_URL: z.url(),
   S3_BUCKET_NAME: z.string().min(3),
