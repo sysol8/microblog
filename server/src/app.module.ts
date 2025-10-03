@@ -7,7 +7,7 @@ import {
   APP_PIPE,
   APP_INTERCEPTOR,
   APP_FILTER,
-  BaseExceptionFilter,
+  BaseExceptionFilter, APP_GUARD,
 } from '@nestjs/core';
 import { ZodError } from 'zod';
 import {
@@ -17,11 +17,14 @@ import {
   Logger,
   Catch,
 } from '@nestjs/common';
-import { configModule } from '../config/config.module';
+import { configModule } from './config/config.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PostsController } from './posts/posts.controller';
-import { UsersController } from './users/users.controller';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { PostsModule } from './posts/posts.module';
+import { PrismaModule } from './prisma/prisma.module';
+import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 
 @Catch(HttpException)
 class HttpExceptionFilter extends BaseExceptionFilter {
@@ -41,8 +44,8 @@ class HttpExceptionFilter extends BaseExceptionFilter {
 }
 
 @Module({
-  imports: [configModule],
-  controllers: [AppController, UsersController, PostsController],
+  imports: [configModule, UsersModule, AuthModule, PrismaModule],
+  controllers: [AppController],
   providers: [
     AppService,
     {
@@ -56,6 +59,10 @@ class HttpExceptionFilter extends BaseExceptionFilter {
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
     },
   ],
 })
