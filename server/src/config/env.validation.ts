@@ -1,6 +1,7 @@
 import { validationSchema } from './index';
 import { z } from 'zod';
 
+// функция для валидации .env-переменных через zod
 export function validate(config: Record<string, unknown>) {
   try {
     return validationSchema.parse(config);
