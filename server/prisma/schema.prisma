@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -17,6 +16,7 @@ model User {
   posts        Post[]   @relation("WrittenPosts")
   likes        Like[]
   likesCount   Int      @default(0)
+  Token        Token[]
 }
 
 model Post {
@@ -39,4 +39,16 @@ model Like {
   postId    String
 
   @@unique([userId, postId])
+}
+
+model Token {
+  id        String    @id @default(uuid())
+  user      User      @relation(fields: [userId], references: [id])
+  jti       String    @unique
+  userId    String
+  createdAt DateTime  @default(now())
+  expiresAt DateTime
+  revokedAt DateTime?
+
+  @@index([userId, revokedAt, expiresAt])
 }
