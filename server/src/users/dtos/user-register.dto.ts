@@ -7,10 +7,17 @@ const UserRegisterRequestSchema = z.object({
 });
 
 const UserRegisterResponseSchema = z.object({
+  id: z.uuid(),
   username: z.string(),
+  accessToken: z.string(),
 });
 
 export type UserRegisterRequest = z.infer<typeof UserRegisterRequestSchema>;
 export type UserRegisterResponse = z.infer<typeof UserRegisterResponseSchema>;
 
-export class UserRegisterDto extends createZodDto(UserRegisterRequestSchema) {}
+export class UserRegisterRequestDto extends createZodDto(
+  UserRegisterRequestSchema,
+) {}
+export class UserRegisterResponseDto extends createZodDto(
+  UserRegisterResponseSchema,
+) {}
