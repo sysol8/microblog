@@ -1,6 +1,7 @@
 import { cleanupOpenApiDoc } from 'nestjs-zod';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -14,7 +15,6 @@ async function bootstrap() {
       .setVersion('1.0')
       .build(),
   );
-
   SwaggerModule.setup('api', app, cleanupOpenApiDoc(openApiDoc));
 
   const config = new DocumentBuilder()
@@ -26,6 +26,14 @@ async function bootstrap() {
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
 
+  app.use(cookieParser());
+
+  app.enableCors({
+    origin: ['http://localhost:5173'],
+    credentials: true,
+  });
+
   await app.listen(process.env.PORT ?? 3000);
 }
-bootstrap();
+
+void bootstrap();
